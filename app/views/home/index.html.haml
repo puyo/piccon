@@ -1,0 +1,8 @@
+%h1 Piccon
+%p
+  - if signed_in?
+    Signed in as
+    %strong= current_user.try(:name)
+    <a href='/logout'>Log out</a>
+  - else
+    <a href='/auth/facebook'>Sign in with Facebook</a>

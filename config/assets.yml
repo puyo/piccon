@@ -1,0 +1,9 @@
+embed_assets: on
+
+javascripts:
+  screen:
+    - public/javascripts/vendor/jquery-1.4.3.js
+
+stylesheets:
+  screen:
+    - public/stylesheets/compiled/screen.css
