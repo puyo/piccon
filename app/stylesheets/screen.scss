@@ -5,3 +5,23 @@
 
 @import "compass/reset";
 @import "text";
+@import "compass/css3";
+
+@include font-face("Aenigma Scrawl", font-files("/fonts/aescrawl.ttf", truetype));
+body { margin: 20px auto; width: 960px; }
+h1 { font-family: "Aenigma Scrawl", serif; font-size: 300%; }
+p { margin-bottom: 0.5em; }
+
+canvas {
+    border: 1px solid red;
+    background-color: #eee;
+}
+
+#canvas{
+    float: left;
+    margin-right: 10px;
+}
+
+#render {
+    cursor: crosshair;
+}
