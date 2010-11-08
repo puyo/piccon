@@ -3,7 +3,6 @@ embed_assets: on
 javascripts:
   screen:
     - public/javascripts/vendor/jquery-1.4.3.js
-    - public/javascripts/vendor/raphael-1.5.2.js
     - public/javascripts/application.js
 
 stylesheets:
