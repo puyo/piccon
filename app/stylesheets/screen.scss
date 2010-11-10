@@ -15,3 +15,38 @@ p { margin-bottom: 0.5em; }
 #drawarea {
   border: 4px solid #ccc;
 }
+
+.button {
+	display: block;
+	float: left;
+	font: 14px "Lucida Grande";
+	font-weight: bold;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid rgba(0,0,0,0.5);
+}
+
+.button {
+	background-color: #d93ff0 !important; /* Change the colour of the button here */
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.2)), to(rgba(0,0,0,0.4)));
+	background: -moz-linear-gradient(top, rgba(255,255,255,0.2), rgba(0,0,0,0.4));
+}
+
+.button:hover {	/* BUG! - must inlude "a" before class name for gradient to work in FF */
+ 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.4)), to(rgba(0,0,0,0.3)));
+	background: -moz-linear-gradient(top, rgba(255,255,255,0.4), rgba(0,0,0,0.3));
+}
+
+.button:active {
+ 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.4)), to(rgba(0,0,0,0.2)));
+ 	background: -moz-linear-gradient(top, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+}
+
+.button:active span {
+	border: 1px solid rgba(255,255,255,0.2);
+	border-top: 1px solid rgba(255,255,255,0.4);
+}
