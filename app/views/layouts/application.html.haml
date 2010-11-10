@@ -1,0 +1,16 @@
+!!! 5
+%html
+  %head
+    %title Piccon
+    = include_stylesheets :screen, :media => 'all'
+    = include_javascripts :screen
+    = csrf_meta_tag
+  %body
+    %h1 Piccon
+    - if flash.notice
+      %p.notice
+        = notice
+    - if flash.alert
+      %p.alert
+        = alert
+    = yield
