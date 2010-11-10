@@ -9,7 +9,7 @@
   Hi there!
 #drawarea
 
-%form#drawform{:style => 'display:none', :method => :post}
+%form#drawform{:style => 'display:none', :method => :post, :action => '/'}
   //%input#pixels{:type => :hidden, :name => :pixels, :value => Array.new(128*128).map{|c| rand(2) }.join}
   %input#pixels{:type => :hidden, :name => :pixels, :value => params[:pixels]}
   =submit_tag 'Send', :class => :button
