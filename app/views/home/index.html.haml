@@ -1,4 +1,3 @@
-%h1 Piccon
 %p
   - if signed_in?
     Signed in as
@@ -11,8 +10,9 @@
 #drawarea
 
 %form#drawform{:style => 'display:none', :method => :post}
-  %input#pixels{:type => :hidden, :name => :pixels, :value => '01010101010'}
-  =submit_tag 'Send'
+  //%input#pixels{:type => :hidden, :name => :pixels, :value => Array.new(128*128).map{|c| rand(2) }.join}
+  %input#pixels{:type => :hidden, :name => :pixels, :value => params[:pixels]}
+  =submit_tag 'Send', :class => :button
 
 :javascript
   var flashReady = false;
@@ -46,4 +46,4 @@
   };
   var flashvars = {
   };
-  swfobject.embedSWF("/flash/PicconDrawArea.swf", "drawarea", "640", "512", "9.0.0", false, flashvars, params);
+  swfobject.embedSWF("/flash/PicconDrawArea.swf?#{Rails.root.join('public/flash/PicconDrawArea.swf').mtime.to_i}", "drawarea", "640", "512", "9.0.0", false, flashvars, params);

@@ -243,25 +243,25 @@ package {
 				_blackPointButton,
 				_whiteCircleButton,
 				_blackCircleButton,
-				_whiteSquareButton,
-				_blackSquareButton,
 				_whiteBigCircleButton,
 				_blackBigCircleButton,
+				_whiteSquareButton,
+				_blackSquareButton,
 				_whiteSprayButton,
 				_blackSprayButton,
 				];
 			_buttonsRow1 = [
 				_blackPointButton,
 				_blackCircleButton,
-				_blackSquareButton,
 				_blackBigCircleButton,
+				_blackSquareButton,
 				_blackSprayButton,
 				];
 			_buttonsRow2 = [
 				_whitePointButton,
 				_whiteCircleButton,
-				_whiteSquareButton,
 				_whiteBigCircleButton,
+				_whiteSquareButton,
 				_whiteSprayButton,
 				];
 
@@ -485,44 +485,6 @@ class DynButton extends Sprite {
 		//graphics.beginFill(0xff0000);
 		graphics.drawRoundRect(0, 0, _width, _height, 10, 10);
 		graphics.endFill();
-	}
-}
-
-class SendButton extends DynButton {
-
-	function SendButton() {
-		mouseChildren = false;
-		_width = 60;
-		_height = 95;
-
-		var format:TextFormat = new TextFormat();
-		format.font = "Helvetica";
-		format.color = 0xffffff;
-		format.size = 16;
-		format.bold = true;
-		format.align = TextFormatAlign.CENTER;
-
-		var label:TextField = new TextField();
-		label.background = false;
-		label.border = false;
-		label.text = "Send";
-		label.setTextFormat(format);
-		label.width = _width - 10;
-		label.height = 20;
-
-		label.x = (_width - (_width - 10))/2;
-		label.y = (_height - label.height)/2;
-
-		var bm:Bitmap = new Bitmap();
-
-		addChild(label);
-
-		redraw();
-	}
-
-	public function turnOn():void {
-		_on = true;
-		redraw();
 	}
 }
 
