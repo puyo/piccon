@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<flex-config>
+   <compiler>
+      <locale>
+          <locale-element>en_US</locale-element>
+      </locale>
+
+      <!-- Enable post-link SWF optimization. -->
+      <optimize>true</optimize>
+
+      <!-- Turn on reporting of data binding warnings. For example: Warning: Data binding -->
+      <!-- will not be able to detect assignments to "foo".                               -->
+      <show-binding-warnings>true</show-binding-warnings>
+
+      <!-- toggle whether warnings generated from unused type selectors are displayed -->
+      <show-unused-type-selector-warnings>true</show-unused-type-selector-warnings>
+
+      <!-- Run the AS3 compiler in strict error checking mode. -->
+      <strict>true</strict>
+
+      <!-- Use the ActionScript 3 class based object model for greater performance and better error reporting. -->
+      <!-- In the class based object model most built-in functions are implemented as fixed methods of classes -->
+      <!-- (-strict is recommended, but not required, for earlier errors) -->
+      <as3>true</as3>
+
+      <!-- Use the ECMAScript edition 3 prototype based object model to allow dynamic overriding of prototype -->
+      <!-- properties. In the prototype based object model built-in functions are implemented as dynamic      -->
+      <!-- properties of prototype objects (-strict is allowed, but may result in compiler errors for         -->
+      <!-- references to dynamic properties) -->
+      <es>false</es>
+
+      <!-- Turns on the display of stack traces for uncaught runtime errors. -->
+      <verbose-stacktraces>true</verbose-stacktraces>
+  </compiler>
+
+  <default-size>
+	  <width>512</width>
+	  <height>640</height>
+  </default-size>
+
+   <!-- Enables SWFs to access the network. -->
+   <use-network>true</use-network>
+
+   <!-- Metadata added to SWFs via the SWF Metadata tag. -->
+   <metadata>
+      <title>Piccon Drawing Application</title>
+	  <description>http://cheekydevilgames.com/piccon/</description>
+      <publisher>Cheeky Devil Games</publisher>
+      <creator>Cheeky Devil Games</creator>
+      <language>EN</language>
+   </metadata>
+
+</flex-config>

@@ -8,5 +8,42 @@
     <a href='/auth/facebook'>Sign in with Facebook</a>
 %p.alt
   Hi there!
-%canvas#canvas
-%canvas#render
+#drawarea
+
+%form#drawform{:style => 'display:none', :method => :post}
+  %input#pixels{:type => :hidden, :name => :pixels, :value => '01010101010'}
+  =submit_tag 'Send'
+
+:javascript
+  var flashReady = false;
+  var timeout;
+
+  function drawAreaReady() {
+    flashReady = true;
+  }
+
+  $(document).ready(function() {
+    var checkReady = function() {
+      if (flashReady)
+        return onReady();
+      timeout = setTimeout(checkReady, 100); 
+    }
+    timeout = setTimeout(checkReady, 100); 
+  });
+
+  function onReady() {
+    var drawForm = $('#drawform');
+    var pixelsInput = $('#pixels');
+    var drawArea = $('#drawarea')[0];
+    drawArea.setImageData(pixelsInput.val());
+    drawForm.show().submit(function() {
+      pixelsInput.val(drawarea.getImageData());
+    });
+  }
+
+  var params = {
+    allowScriptAccess: "sameDomain"
+  };
+  var flashvars = {
+  };
+  swfobject.embedSWF("/flash/PicconDrawArea.swf", "drawarea", "640", "512", "9.0.0", false, flashvars, params);

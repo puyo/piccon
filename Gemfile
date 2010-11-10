@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.1'
-gem 'pg'               # postgres
+gem 'mysql'               # postgres
 gem 'foreigner'        # foreign key constraints
 gem 'omniauth'         # authentication
 gem 'haml', '>= 3.0.0' # markup and css templates

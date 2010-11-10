@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(:version => 20101107104703) do
     t.datetime "updated_at"
   end
 
+  add_index "authorizations", ["user_id"], :name => "authorizations_user_id_fk"
+
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
