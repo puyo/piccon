@@ -1,9 +1,10 @@
 class SessionsController < ApplicationController
   def create
     rack_auth = request.env['rack.auth']
-    @auth = Authorization.find_from_hash(rack_auth)
+    @auth = Authorization.find_by_provider_and_uid(rack_auth['provider'], rack_auth['uid'])
     if @auth.nil?
-      @auth = Authorization.create_from_hash(rack_auth, current_user)
+      user = User.find_or_create_by_name(rack_auth['user_info']['name'])
+      @auth = Authorization.create(:user => user, :uid => rack_auth['uid'], :provider => rack_auth['provider'])
     end
     self.current_user = @auth.user
     flash.notice = "Welcome, #{current_user.name}."
