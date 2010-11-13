@@ -1,14 +1,19 @@
 class UpdateUsers < ActiveRecord::Migration
-  class Authorizations < ActiveRecord::Base
-  end
   class User < ActiveRecord::Base
     has_many :authorizations
   end
 
   def self.up
-    old_users = []
+    old_users = Hash.new{|h,k| h[k] = {} }
     say_with_time "Fetching current users..." do
-      ActiveRecord::Base.connection.execute('select * from users').each_hash{|x| old_users << x }
+      execute('select * from users').each_hash{|x| old_users[x['facebook_id']] = x }
+      # add users from posts table
+      execute('select author_id as facebook_id from posts').each_hash do |x|
+        old_users[x['facebook_id']].update(x)
+      end
+      execute('select user_id as facebook_id from players').each_hash do |x|
+        old_users[x['facebook_id']].update(x)
+      end
     end
 
     drop_table :users
@@ -24,14 +29,14 @@ class UpdateUsers < ActiveRecord::Migration
     end
     ActiveRecord::Base.record_timestamps = false
     say_with_time "Recreating users..." do
-      old_users.each do |user|
-        new_user = User.create!(:updated_at => user['updated_at'], :created_at => user['created_at'])
-        authorization = new_user.authorizations.create!({
+      old_users.each do |facebook_id, user|
+        new_user = UpdateUsers::User.create!(:updated_at => user['updated_at'], :created_at => user['created_at'])
+        new_user.authorizations.new({
           :provider => 'facebook',
-          :uid => user['facebook_id'],
+          :uid => facebook_id,
           :updated_at => user['updated_at'],
           :created_at => user['created_at'],
-        })
+        }).save(false)
       end
     end
   end

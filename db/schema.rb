@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101113010101) do
+ActiveRecord::Schema.define(:version => 20101113014333) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider",   :null => false
@@ -20,14 +20,21 @@ ActiveRecord::Schema.define(:version => 20101113010101) do
     t.datetime "updated_at"
   end
 
-  add_index "authorizations", ["provider"], :name => "index_authorizations_on_provider"
-  add_index "authorizations", ["uid"], :name => "index_authorizations_on_uid"
-  add_index "authorizations", ["user_id"], :name => "index_authorizations_on_user_id"
+  add_index "authorizations", ["uid", "provider"], :name => "index_authorizations_on_uid_and_provider", :unique => true
+  add_index "authorizations", ["user_id"], :name => "index_authorizations_on_user_id", :unique => true
 
-  create_table "games", :force => true do |t|
-    t.integer  "owner_id"
-    t.integer  "length",                     :default => 12
-    t.integer  "status",                     :default => 0
+  create_table "lovers", :force => true do |t|
+    t.integer "user_id"
+    t.integer "paper_id"
+  end
+
+  add_index "lovers", ["paper_id"], :name => "index_lovers_on_game_id"
+  add_index "lovers", ["user_id"], :name => "index_lovers_on_user_id"
+
+  create_table "papers", :force => true do |t|
+    t.integer  "owner_user_id"
+    t.integer  "length",                     :default => 12, :null => false
+    t.integer  "status",                     :default => 0,  :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "current_player_id"
@@ -44,22 +51,15 @@ ActiveRecord::Schema.define(:version => 20101113010101) do
     t.boolean  "phase"
   end
 
-  add_index "games", ["featured_thumbnail_post_id"], :name => "index_games_on_featured_thumbnail_post_id"
-  add_index "games", ["finished_at"], :name => "index_games_on_finished_at"
-  add_index "games", ["status"], :name => "index_games_on_status"
-  add_index "games", ["thumbnail_post_id"], :name => "index_games_on_thumbnail_post_id"
-  add_index "games", ["updated_at"], :name => "index_games_on_updated_at"
-
-  create_table "lovers", :force => true do |t|
-    t.integer "user_id"
-    t.integer "game_id"
-  end
-
-  add_index "lovers", ["game_id"], :name => "index_lovers_on_game_id"
-  add_index "lovers", ["user_id"], :name => "index_lovers_on_user_id"
+  add_index "papers", ["featured_thumbnail_post_id"], :name => "index_games_on_featured_thumbnail_post_id"
+  add_index "papers", ["finished_at"], :name => "index_games_on_finished_at"
+  add_index "papers", ["owner_user_id"], :name => "papers_owner_user_id_fk"
+  add_index "papers", ["status"], :name => "index_games_on_status"
+  add_index "papers", ["thumbnail_post_id"], :name => "index_games_on_thumbnail_post_id"
+  add_index "papers", ["updated_at"], :name => "index_games_on_updated_at"
 
   create_table "players", :force => true do |t|
-    t.integer  "game_id"
+    t.integer  "paper_id"
     t.integer  "user_id"
     t.integer  "status"
     t.datetime "created_at"
@@ -67,20 +67,21 @@ ActiveRecord::Schema.define(:version => 20101113010101) do
     t.integer  "order_position", :null => false
   end
 
-  add_index "players", ["game_id"], :name => "index_players_on_game_id"
+  add_index "players", ["paper_id"], :name => "index_players_on_game_id"
   add_index "players", ["status"], :name => "index_players_on_status"
   add_index "players", ["user_id"], :name => "index_players_on_user_id"
 
   create_table "posts", :force => true do |t|
-    t.integer  "game_id"
-    t.integer  "author_id"
+    t.integer  "paper_id"
+    t.integer  "author_user_id"
     t.string   "text"
     t.string   "image_filename"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "posts", ["game_id"], :name => "index_posts_on_game_id"
+  add_index "posts", ["author_user_id"], :name => "index_posts_on_author_user_id"
+  add_index "posts", ["paper_id"], :name => "index_posts_on_game_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
@@ -89,7 +90,6 @@ ActiveRecord::Schema.define(:version => 20101113010101) do
     t.datetime "updated_at"
   end
 
-  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "users", :force => true do |t|
