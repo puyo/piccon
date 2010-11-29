@@ -10,25 +10,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101113014333) do
-
-  create_table "authorizations", :force => true do |t|
-    t.string   "provider",   :null => false
-    t.string   "uid",        :null => false
-    t.integer  "user_id",    :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "authorizations", ["uid", "provider"], :name => "index_authorizations_on_uid_and_provider", :unique => true
-  add_index "authorizations", ["user_id"], :name => "index_authorizations_on_user_id", :unique => true
+ActiveRecord::Schema.define(:version => 20101113014334) do
 
   create_table "lovers", :force => true do |t|
     t.integer "user_id"
     t.integer "paper_id"
   end
 
-  add_index "lovers", ["paper_id"], :name => "index_lovers_on_game_id"
+  add_index "lovers", ["paper_id", "user_id"], :name => "index_lovers_on_paper_id_and_user_id", :unique => true
   add_index "lovers", ["user_id"], :name => "index_lovers_on_user_id"
 
   create_table "papers", :force => true do |t|
@@ -51,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20101113014333) do
     t.boolean  "phase"
   end
 
+  add_index "papers", ["current_player_id"], :name => "papers_current_player_id_fk"
   add_index "papers", ["featured_thumbnail_post_id"], :name => "index_games_on_featured_thumbnail_post_id"
   add_index "papers", ["finished_at"], :name => "index_games_on_finished_at"
   add_index "papers", ["owner_user_id"], :name => "papers_owner_user_id_fk"
@@ -67,6 +57,7 @@ ActiveRecord::Schema.define(:version => 20101113014333) do
     t.integer  "order_position", :null => false
   end
 
+  add_index "players", ["paper_id", "user_id", "order_position"], :name => "index_players_on_paper_id_and_user_id_and_order_position", :unique => true
   add_index "players", ["paper_id"], :name => "index_players_on_game_id"
   add_index "players", ["status"], :name => "index_players_on_status"
   add_index "players", ["user_id"], :name => "index_players_on_user_id"
@@ -90,12 +81,30 @@ ActiveRecord::Schema.define(:version => 20101113014333) do
     t.datetime "updated_at"
   end
 
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "users", :force => true do |t|
     t.string   "name"
+    t.string   "fb_id"
+    t.boolean  "fb_auth"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "users", ["fb_auth"], :name => "index_users_on_fb_auth"
+  add_index "users", ["fb_id"], :name => "index_users_on_fb_id", :unique => true
+
+  add_foreign_key "lovers", "papers", :name => "lovers_paper_id_fk", :dependent => :delete
+  add_foreign_key "lovers", "users", :name => "lovers_user_id_fk", :dependent => :delete
+
+  add_foreign_key "papers", "users", :name => "papers_current_player_id_fk", :column => "current_player_id"
+  add_foreign_key "papers", "users", :name => "papers_owner_user_id_fk", :column => "owner_user_id"
+
+  add_foreign_key "players", "papers", :name => "players_paper_id_fk", :dependent => :delete
+  add_foreign_key "players", "users", :name => "players_user_id_fk"
+
+  add_foreign_key "posts", "papers", :name => "posts_paper_id_fk", :dependent => :delete
+  add_foreign_key "posts", "users", :name => "posts_author_user_id_fk", :column => "author_user_id"
 
 end

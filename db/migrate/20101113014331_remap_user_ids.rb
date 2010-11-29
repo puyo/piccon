@@ -7,8 +7,15 @@ class RemapUserIds < ActiveRecord::Migration
         [:players, :user_id],
         [:posts, :author_user_id],
         [:papers, :owner_user_id],
+        [:papers, :current_player_id],
+        [:papers, :last_player_id],
+        [:papers, :second_last_player_id],
       ].each do |table, col|
-        execute("UPDATE #{table}, authorizations SET #{table}.#{col} = authorizations.user_id WHERE #{table}.#{col} = authorizations.uid AND authorizations.provider = 'facebook'")
+        execute(<<-SQL)
+          UPDATE #{table}, users
+          SET #{table}.#{col} = users.id
+          WHERE #{table}.#{col} = users.fb_id
+        SQL
       end
     end
   end
