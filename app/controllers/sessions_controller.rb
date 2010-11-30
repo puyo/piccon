@@ -1,14 +1,22 @@
 class SessionsController < ApplicationController
   def create
     rack_auth = request.env['rack.auth']
-    @auth = Authorization.find_by_provider_and_uid(rack_auth['provider'], rack_auth['uid'])
-    if @auth.nil?
-      user = User.find_or_create_by_name(rack_auth['user_info']['name'])
-      @auth = Authorization.create(:user => user, :uid => rack_auth['uid'], :provider => rack_auth['provider'])
+    case rack_auth['provider']
+    when 'facebook'
+      user = self.current_user || User.find_by_fb_id(rack_auth['uid'])
+      user.name ||= rack_auth['user_info']['name']
+      user.fb_id ||= rack_auth['uid']
+      user.fb_auth = true
+      if user.save
+        self.current_user = user
+        flash.notice = "Welcome, #{current_user.name}"
+        redirect_to root_url
+      else
+        self.current_user = nil
+        flash.alert = user.errors.full_messages
+        redirect_to root_url
+      end
     end
-    self.current_user = @auth.user
-    flash.notice = "Welcome, #{current_user.name}"
-    redirect_to root_url
   end
 
   def destroy

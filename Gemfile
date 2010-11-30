@@ -9,7 +9,6 @@ gem 'haml-rails', '0.3.4'  # use haml as templating engine
 gem 'jammit', '0.5.3'      # asset packaging
 gem 'compass', '0.10.6'    # sass mixins and generators
 gem 'chunky_png', '0.11.0' # encode PNG images
-gem 'paperclip', '2.3.5'   # file attachments on models
 
 gem 'ruby-debug', :group => [:development, :test]
 gem 'rspec-rails', '>= 2.0', :group => [:development, :test]

@@ -8,9 +8,9 @@
   %body
     %h1 Piccon
     - if flash.notice
-      %p.notice
-        = notice
+      .notice
+        %p= notice
     - if flash.alert
-      %p.alert
-        = alert
+      .alert
+        %p= alert
     = yield

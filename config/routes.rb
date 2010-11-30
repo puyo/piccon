@@ -1,8 +1,10 @@
 Piccon::Application.routes.draw do
-  get "home/index"
   match '/logout', :to => 'sessions#destroy'
   match '/auth/:provider/callback', :to => 'sessions#create'
   match '/auth/failure', :to => 'sessions#failure'
+
+  resources :posts
+
   root :to => "home#index"
 
   # The priority is based upon order of creation:

@@ -128,9 +128,6 @@ GEM
       oa-enterprise (= 0.1.6)
       oa-oauth (= 0.1.6)
       oa-openid (= 0.1.6)
-    paperclip (2.3.5)
-      activerecord
-      activesupport
     polyglot (0.3.1)
     pyu-ruby-sasl (0.0.3.2)
     rack (1.2.1)
@@ -207,7 +204,6 @@ DEPENDENCIES
   jammit (= 0.5.3)
   mysql (= 2.8.1)
   omniauth (= 0.1.6)
-  paperclip (= 2.3.5)
   rails (= 3.0.1)
   rspec-rails (>= 2.0)
   ruby-debug

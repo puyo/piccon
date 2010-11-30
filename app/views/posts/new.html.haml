@@ -1,13 +1,9 @@
-.signed_in_as
-  - if signed_in?
-    <p>Signed in as <strong>#{current_user.try(:name)}</strong></p>
-    <p><a href='/logout'>Log out</a></p>
-  - else
-    <p><a href='/auth/facebook'>Sign in with Facebook</a></p>
+
+%h2 New Post
 
 #drawarea
 
-= form_for(:post, :html => {:id => :draw_form, :style => 'display:none'}) do |f|
+= form_for(@post, :html => {:id => :draw_form, :style => 'display:none'}) do |f|
   = f.hidden_field :pixels
   = f.submit 'Send'
 
