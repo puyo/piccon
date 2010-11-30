@@ -10,18 +10,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101113014334) do
+ActiveRecord::Schema.define(:version => 20101130111901) do
 
   create_table "lovers", :force => true do |t|
-    t.integer "user_id"
-    t.integer "paper_id"
+    t.integer "user_id",  :null => false
+    t.integer "paper_id", :null => false
   end
 
   add_index "lovers", ["paper_id", "user_id"], :name => "index_lovers_on_paper_id_and_user_id", :unique => true
   add_index "lovers", ["user_id"], :name => "index_lovers_on_user_id"
 
   create_table "papers", :force => true do |t|
-    t.integer  "owner_user_id"
+    t.integer  "owner_user_id",                              :null => false
     t.integer  "length",                     :default => 12, :null => false
     t.integer  "status",                     :default => 0,  :null => false
     t.datetime "created_at"
@@ -49,8 +49,8 @@ ActiveRecord::Schema.define(:version => 20101113014334) do
   add_index "papers", ["updated_at"], :name => "index_games_on_updated_at"
 
   create_table "players", :force => true do |t|
-    t.integer  "paper_id"
-    t.integer  "user_id"
+    t.integer  "paper_id",       :null => false
+    t.integer  "user_id",        :null => false
     t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -63,8 +63,8 @@ ActiveRecord::Schema.define(:version => 20101113014334) do
   add_index "players", ["user_id"], :name => "index_players_on_user_id"
 
   create_table "posts", :force => true do |t|
-    t.integer  "paper_id"
-    t.integer  "author_user_id"
+    t.integer  "paper_id",       :null => false
+    t.integer  "author_user_id", :null => false
     t.string   "text"
     t.string   "image_filename"
     t.datetime "created_at"
