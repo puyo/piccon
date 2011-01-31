@@ -18,6 +18,7 @@ class PostsController < ApplicationController
   private
 
   def load_post
-    @post = Post.new(params[:post])
+    @paper = current_user.papers.find(params[:paper_id])
+    @post = @paper.posts.build(params[:post])
   end
 end

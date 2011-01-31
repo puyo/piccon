@@ -1,9 +1,12 @@
 class Post < ActiveRecord::Base
 
+  WIDTH = 128
+  HEIGHT = 128
+
   belongs_to :author, :foreign_key => :author_user_id
   belongs_to :paper
 
-  validates :pixels, :format => /^(?:2|3){16384}$/
+  validates :pixels, :format => /^(?:0|1){#{WIDTH*HEIGHT}}$/
 
   def pixels
     @pixels
@@ -27,10 +30,10 @@ class Post < ActiveRecord::Base
       @dirty = false
       # write pixels to file
       img = ChunkyPNG::Image.new(128, 128)
-      (0...height).each do |y|
-        (0...width).each do |x|
+      (0...HEIGHT).each do |y|
+        (0...WIDTH).each do |x|
           p [x, y]
-          img[x, y] = @pixels[y*width + x].chr == '0' ? ChunkyPNG::Color::BLACK : ChunkyPNG::Color::WHITE
+          img[x, y] = @pixels[y*WIDTH + x].chr == '0' ? ChunkyPNG::Color::BLACK : ChunkyPNG::Color::WHITE
         end
       end
       img.save('filename.png', :interlace => true)
@@ -42,11 +45,4 @@ class Post < ActiveRecord::Base
     errors.add_to_base('Must not be a blank drawing') unless @pixels.include?('1')
   end
 
-  def width
-    128
-  end
-
-  def height
-    128
-  end
 end

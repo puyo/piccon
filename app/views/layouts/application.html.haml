@@ -13,4 +13,12 @@
     - if flash.alert
       .alert
         %p= alert
+
+    .signed_in_as
+      - if signed_in?
+        <p>Signed in as <strong>#{current_user.try(:name)}</strong></p>
+        <p><a href='/logout'>Log out</a></p>
+      - else
+        <p><a href='/auth/facebook'>Sign in with Facebook</a></p>
+
     = yield

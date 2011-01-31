@@ -4,11 +4,15 @@ class ApplicationController < ActionController::Base
   protected
 
   def current_user
-    @current_user ||= User.find_by_id(session[:user_id])
+    if Rails.env == 'development'
+      User.find_or_create_by_id(1)
+    else
+      @current_user ||= User.find_by_id(session[:user_id]) || User.new
+    end
   end
 
   def signed_in?
-    !!current_user # not nil
+    current_user.present? and not current_user.new_record?
   end
 
   helper_method :current_user, :signed_in?

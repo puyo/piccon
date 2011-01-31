@@ -1,0 +1,9 @@
+= form_for @paper do |f|
+  .new_paper_online
+    .h2 Play with people online
+    = f.select :length, [3, 4, 5]
+  .new_paper_offline
+    .h2 Play with people offline
+    = f.select :length, [3, 4, 5]
+    = f.check_box :private
+    = f.submit 'Start'

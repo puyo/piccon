@@ -3,7 +3,9 @@ Piccon::Application.routes.draw do
   match '/auth/:provider/callback', :to => 'sessions#create'
   match '/auth/failure', :to => 'sessions#failure'
 
-  resources :posts
+  resources :papers do
+    resources :posts
+  end
 
   root :to => "home#index"
 

@@ -1,43 +1,47 @@
-
 %h2 New Post
 
-#drawarea
+%canvas#drawing
+.controls
+  %button.brush.black.pixel Black Pixel
+  %button.brush.white.pixel White Pixel
+  %button.brush.black.circle.small Small Black Circle
+  %button.brush.white.circle.small Small White Circle
+  %button.brush.black.circle.large Large Black Circle
+  %button.brush.white.circle.large Large White Circle
+  %button.brush.black.square.large Large Black Square
+  %button.brush.white.square.large Large White Square
+  %button.black.clear Clear to Black
+  %button.white.clear Clear to White
 
-= form_for(@post, :html => {:id => :draw_form, :style => 'display:none'}) do |f|
+= form_for([@paper, @post], :html => {:id => :draw_form}) do |f|
   = f.hidden_field :pixels
   = f.submit 'Send'
 
 :javascript
-  var flashReady = false;
-  var timeout;
-
-  function drawAreaReady() {
-    flashReady = true;
-  }
-
   $(document).ready(function() {
-    var checkReady = function() {
-      if (flashReady)
-        return onReady();
-      timeout = setTimeout(checkReady, 100); 
-    }
-    timeout = setTimeout(checkReady, 100); 
-  });
-
-  function onReady() {
-    var drawForm = $('#draw_form');
-    var pixelsInput = $('#post_pixels');
-    var drawArea = $('#drawarea')[0];
-    drawArea.setImageData(pixelsInput.val());
-    // only show the submit form when the flash component is ready
-    drawForm.show().submit(function() {
-      pixelsInput.val(drawarea.getImageData());
+    var form = $('#draw_form');
+    form.submit(function() {
+      // fetch data from canvas
+      try {
+        var canvas = document.getElementById('drawing');
+        var ctx = canvas.getContext('2d');
+        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var data = imageData.data;
+        var result = '';
+        for (var y = 0; y < imageData.height; ++y) {
+          for (var x = 0; x < imageData.width; ++x) {
+            var pos = (y*imageData.width + x)*4 + 3;
+            var val = data[pos];
+            //if (val !== 0) {
+              //console.log(pos, val);
+            //}
+            result += (val === 0 ? '0' : '1');
+          }
+        }
+      } catch(e) {
+        console.log(e);
+      };
+      console.log(result);
+      return false;
     });
-  }
-
-  var params = {
-    allowScriptAccess: "sameDomain"
-  };
-  var flashvars = {
-  };
-  swfobject.embedSWF("/flash/PicconDrawArea.swf?#{Rails.root.join('public/flash/PicconDrawArea.swf').mtime.to_i}", "drawarea", "640", "512", "9.0.0", false, flashvars, params);
+  });
