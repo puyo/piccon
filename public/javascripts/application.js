@@ -49,12 +49,12 @@
     self.options.element = $(self.options.selector);
     if (!self.options.element) return;
 
-    self.options.pixelWidth = self.width*self.scale;
-    self.options.pixelHeight = self.height*self.scale;
+    self.options.pixelWidth = self.options.width*self.options.scale;
+    self.options.pixelHeight = self.options.height*self.options.scale;
     self.options.brushCol = "black";
 
     self.options.element.attr('width', self.options.pixelWidth).attr('height', self.options.pixelWidth);
-    var context = self.options.element[0].getContext('2d');
+    self._context = self.options.element[0].getContext('2d');
     //context.drawImage(self.domElem, 0, 0, self.pixelWidth, self.pixelHeight, 0, 0, width, height);
 
     self._brushes = {
@@ -104,17 +104,20 @@
     self._down = false;
     self._lastX = null;
     self._lastY = null;
+    self._brushWidth = 8;
+    self._brushHeight = 8;
 
     self.drawBrush = function(targetContext, data, tx, ty, col) {
       targetContext.fillStyle = col;
 
       tx = Math.floor(tx);
       ty = Math.floor(ty);
-      var w = 8, h = 8;
-      for (var y = 0; y < h; ++y) {
-        for (var x = 0; x < w; ++x) {
-          if (data[y*w + x] === 1) {
-            targetContext.fillRect((tx + x - w/2 - 1)*drawing.scale, (ty + y - h/2 - 1)*drawing.scale, drawing.scale, drawing.scale);
+      for (var y = 0; y < self._brushHeight; ++y) {
+        for (var x = 0; x < self._brushWidth; ++x) {
+          if (data[y*self._brushWidth + x] === 1) {
+            var drawX = (tx + x - self._brushWidth/2 - 1)*self.options.scale;
+            var drawY = (ty + y - self._brushHeight/2 - 1)*self.options.scale;
+            targetContext.fillRect(drawX, drawY, self.options.scale, self.options.scale);
           }
         }
       }
@@ -124,34 +127,34 @@
     }
 
     function setLastPos(event) {
-      lastX = Math.floor(event.offsetX / scale);
-      lastY = Math.floor(event.offsetY / scale);
+      lastX = Math.floor(event.offsetX / self.options.scale);
+      lastY = Math.floor(event.offsetY / self.options.scale);
     }
 
     function draw(event) {
-      if (down) {
-        var x = Math.floor(event.offsetX / scale);
-        var y = Math.floor(event.offsetY / scale);
-        if (x >= canvasLength) x = canvasLength - 1;
-        if (y >= canvasLength) y = canvasLength - 1;
+      if (self._down) {
+        var x = Math.floor(event.offsetX / self.options.scale);
+        var y = Math.floor(event.offsetY / self.options.scale);
+        if (x >= self.width) x = self.width - 1;
+        if (y >= self.height) y = self.height - 1;
         if (lastX === null)
           lastX = x;
         if (lastY === null)
           lastY = y;
-        bresenham(lastX, lastY, x, y, function(i, j) { drawing.drawBrush(context, brush, i, j, brushCol); });
+        bresenham(lastX, lastY, x, y, function(i, j) { self.drawBrush(self._context, self._brush, i, j, self.options.brushCol); });
         lastX = x;
         lastY = y;
       }
     }
     self.options.element.mousedown(function(event){
       //console.log('mouse down', event);
-      down = true;
+      self._down = true;
       setLastPos(event);
       draw(event);
       return false;
     }).mouseup(function(event){
       //console.log('mouse up', event);
-      down = false;
+      self._down = false;
     }).mouseenter(function(event){
       //console.log('mouse enter', event);
       setLastPos(event);
@@ -165,42 +168,42 @@
     });
 
     $('button.pixel').click(function(){
-      brush = pixelBrush;
+      self._brush = self._brushes.pixel;
     });
     $('button.black').click(function(){
-      brushCol = "black";
+      self.options.brushCol = "black";
     });
     $('button.white').click(function(){
-      brushCol = "white";
+      self.options.brushCol = "white";
     });
     $('button.circle.small').click(function(){
-      brush = circleBrush;
+      self._brush = self._brushes.circle;
     });
     $('button.circle.large').click(function(){
-      brush = largeCircleBrush;
+      self._brush = self._brushes.largeCircle;
     });
     $('button.square.large').click(function(){
-      brush = largeSquareBrush;
+      self._brush = self._brushes.largeSquare;
     });
     $('button.black.clear').click(function(){
-      context.fillStyle = "black";
-      context.fillRect(0, 0, width, height);
+      self._context.fillStyle = "black";
+      self._context.fillRect(0, 0, self.options.pixelWidth, self.options.pixelHeight);
     });
     $('button.white.clear').click(function(){
-      context.fillStyle = "white";
-      context.fillRect(0, 0, width, height);
+      self._context.fillStyle = "white";
+      self._context.fillRect(0, 0, self.options.pixelWidth, self.options.pixelHeight);
     });
 
     // icons on buttons
-    $('.brush').html("<canvas width="+8*self.options.scale+" height="+8*self.options.scale+"></canvas>");
+    $('.brush').html("<canvas width="+self._brushWidth*self.options.scale+" height="+self._brushHeight*self.options.scale+"></canvas>");
     self.drawBrush($('.brush.black.circle.small canvas')[0].getContext('2d'), self._brushes.circle, 5, 5, "black");
     self.drawBrush($('.brush.black.circle.large canvas')[0].getContext('2d'), self._brushes.largeCircle, 5, 5, "black");
-    self.drawBrush($('.brush.white.circle.large canvas')[0].getContext('2d'), self._brushes.largeCircleBrush, 5, 5, "white");
-    self.drawBrush($('.brush.white.circle.small canvas')[0].getContext('2d'), self._brushes.circleBrush, 5, 5, "white");
-    self.drawBrush($('.brush.white.square.large canvas')[0].getContext('2d'), self._brushes.largeSquareBrush, 5, 5, "white");
-    self.drawBrush($('.brush.black.square.large canvas')[0].getContext('2d'), self._brushes.largeSquareBrush, 5, 5, "black");
-    self.drawBrush($('.brush.white.pixel canvas')[0].getContext('2d'), self._brushes.pixelBrush, 5, 5, "white");
-    self.drawBrush($('.brush.black.pixel canvas')[0].getContext('2d'), self._brushes.pixelBrush, 5, 5, "black");
+    self.drawBrush($('.brush.white.circle.large canvas')[0].getContext('2d'), self._brushes.largeCircle, 5, 5, "white");
+    self.drawBrush($('.brush.white.circle.small canvas')[0].getContext('2d'), self._brushes.circle, 5, 5, "white");
+    self.drawBrush($('.brush.white.square.large canvas')[0].getContext('2d'), self._brushes.largeSquare, 5, 5, "white");
+    self.drawBrush($('.brush.black.square.large canvas')[0].getContext('2d'), self._brushes.largeSquare, 5, 5, "black");
+    self.drawBrush($('.brush.white.pixel canvas')[0].getContext('2d'), self._brushes.pixel, 5, 5, "white");
+    self.drawBrush($('.brush.black.pixel canvas')[0].getContext('2d'), self._brushes.pixel, 5, 5, "black");
   };
 
 })(jQuery, document);
