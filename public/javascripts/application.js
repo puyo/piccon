@@ -210,6 +210,33 @@
         lastX = x;
         lastY = y;
       }
+    },
+
+    pixels: function() {
+      var self = this;
+      var imageData = self._context.getImageData(0, 0, self.options.pixelWidth, self.options.pixelHeight);
+      var data = imageData.data;
+      var result = '';
+      for (var y = 0; y < self.options.height; ++y) {
+        for (var x = 0; x < self.options.width; ++x) {
+          var pos = (y*imageData.width + x)*self.options.scale*4 + 3;
+          var val = data[pos];
+          result += (val === 0 ? '0' : '1');
+        }
+      }
+      return result;
+    },
+
+    setPixels: function(pixels) {
+      if (pixels.length === 0) return;
+      var self = this;
+      self._context.fillStyle = "black";
+      for (var y = 0; y < self.options.height; ++y) {
+        for (var x = 0; x < self.options.width; ++x) {
+          if (pixels[(y*self.options.width + x)] === '1')
+            self._context.fillRect(x*self.options.scale, y*self.options.scale, self.options.scale, self.options.scale);
+        }
+      }
     }
 
   };
@@ -217,5 +244,5 @@
 })(jQuery, document);
 
 $(document).ready(function(){
-  var d = new Drawing({ domElem: $('#drawarea'), scale: 3, width: 128, height: 128 });
+  drawing = new Drawing({ domElem: $('#drawarea'), scale: 3, width: 128, height: 128 });
 });

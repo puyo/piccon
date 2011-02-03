@@ -13,6 +13,11 @@
   %button.black.clear Clear to Black
   %button.white.clear Clear to White
 
+- @paper.posts.each do |post|
+  .post
+    = post.id
+    = post.text
+
 = form_for([@paper, @post], :html => {:id => :draw_form}) do |f|
   = f.hidden_field :pixels
   = f.submit 'Send'
@@ -20,28 +25,16 @@
 :javascript
   $(document).ready(function() {
     var form = $('#draw_form');
+      drawing.setPixels($('#post_pixels').val());
+
     form.submit(function() {
-      // fetch data from canvas
       try {
-        var canvas = document.getElementById('drawing');
-        var ctx = canvas.getContext('2d');
-        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        var data = imageData.data;
-        var result = '';
-        for (var y = 0; y < imageData.height; ++y) {
-          for (var x = 0; x < imageData.width; ++x) {
-            var pos = (y*imageData.width + x)*4 + 3;
-            var val = data[pos];
-            //if (val !== 0) {
-              //console.log(pos, val);
-            //}
-            result += (val === 0 ? '0' : '1');
-          }
-        }
+        var pixels = drawing.pixels();
+        $('#post_pixels').val(pixels);
+        return true;
       } catch(e) {
         console.log(e);
+        return false;
       };
-      console.log(result);
-      return false;
     });
   });
