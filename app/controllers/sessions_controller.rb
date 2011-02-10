@@ -1,4 +1,8 @@
 class SessionsController < ApplicationController
+
+  def new
+  end
+
   def create
     rack_auth = request.env['rack.auth']
     case rack_auth['provider']

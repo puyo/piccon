@@ -1,8 +1,12 @@
 class PapersController < ApplicationController
 
-  before_filter :load_paper, :only => [:edit, :update, :delete]
+  before_filter :load_paper, :only => [:show, :edit, :update, :delete]
+  before_filter :load_papers, :only => [:index]
 
   def index
+  end
+
+  def show
   end
 
   def new
@@ -18,6 +22,10 @@ class PapersController < ApplicationController
   end
 
   private
+
+  def load_papers
+    @papers = current_user.papers
+  end
 
   def load_paper
     @paper = current_user.papers.find_by_id(params[:id])

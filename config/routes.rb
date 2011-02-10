@@ -1,5 +1,6 @@
 Piccon::Application.routes.draw do
   match '/logout', :to => 'sessions#destroy'
+  match '/login', :to => 'sessions#new'
   match '/auth/:provider/callback', :to => 'sessions#create'
   match '/auth/failure', :to => 'sessions#failure'
 

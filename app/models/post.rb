@@ -32,8 +32,7 @@ class Post < ActiveRecord::Base
       img = ChunkyPNG::Image.new(128, 128)
       (0...HEIGHT).each do |y|
         (0...WIDTH).each do |x|
-          p [x, y]
-          img[x, y] = @pixels[y*WIDTH + x].chr == '0' ? ChunkyPNG::Color::BLACK : ChunkyPNG::Color::WHITE
+          img[x, y] = @pixels[y*WIDTH + x].chr == '1' ? ChunkyPNG::Color::BLACK : ChunkyPNG::Color::WHITE
         end
       end
       img.save('filename.png', :interlace => true)
