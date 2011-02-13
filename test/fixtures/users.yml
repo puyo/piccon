@@ -1,0 +1,11 @@
+greg:
+  nickname: greg
+  rating: 100
+  fb_id: '123'
+  fb_auth: '123'
+
+new_guy:
+  nickname: 'new guy'
+  rating: 0
+  fb_id: '230923092302'
+  fb_auth: '230923092302'
