@@ -1,0 +1,16 @@
+unrated_paper:    
+  length: 12
+  status: <%= Status::STARTED %>
+  last_user_id:  <%= Fixtures.identify(:greg) %>
+
+rated_99_paper:    
+  length: 12
+  status: <%= Status::STARTED %>
+  last_user_id:  <%= Fixtures.identify(:greg) %>
+  min_rating: 99
+
+invite_only_paper:
+  length: 12
+  status: <%= Status::STARTED %>
+  last_user_id:  <%= Fixtures.identify(:greg) %>
+  min_rating: 999

@@ -1,16 +1,18 @@
 class Paper < ActiveRecord::Base
   has_many :posts
+  has_many :invites
 
-  named_scope :is_an_assigned_player, lambda { |user|
-    {
-      :conditions => ['(paper.has_players AND players.user_id = ?)', user.id],
-      :joins => 'LEFT JOIN players ON (players.paper_id = paper.id)',
-    }
+  scope :is_invited, lambda { |user|
+    joins(:invites).where('invites.user_id' => user.id)
   }
 
-  named_scope :satisfies_rating, lambda { |user|
+  scope :satisfies_rating, lambda { |user|
+    where('min_rating IS NULL OR min_rating <= ?', user.rating)
+  }
+
+  scope :is_eligible, lambda { |user|
     {
-      :conditions => ['(paper.min_rating IS NULL OR paper.min_rating <= ?', user.rating],
+      :conditions => ['(invites.user_id = ?) OR (papers.min_rating IS NULL OR papers.min_rating <= ?)', user.id, user.rating],
     }
   }
 

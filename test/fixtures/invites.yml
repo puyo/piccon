@@ -1,0 +1,5 @@
+new_guy:
+  paper_id: <%= Fixtures.identify(:invite_only_paper) %>
+  user_id: <%= Fixtures.identify(:new_guy) %>
+  position: nil
+  status: nil

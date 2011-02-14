@@ -12,20 +12,6 @@
 
 ActiveRecord::Schema.define(:version => 20110208093203) do
 
-  create_table "assignees", :force => true do |t|
-    t.integer  "paper_id",                  :null => false
-    t.integer  "user_id",                   :null => false
-    t.integer  "position",   :default => 0, :null => false
-    t.integer  "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "assignees", ["paper_id", "user_id", "position"], :name => "index_assignees_on_paper_id_and_user_id_and_position", :unique => true
-  add_index "assignees", ["paper_id"], :name => "index_assignees_on_game_id"
-  add_index "assignees", ["status"], :name => "index_assignees_on_status"
-  add_index "assignees", ["user_id"], :name => "index_assignees_on_user_id"
-
   create_table "galleries", :force => true do |t|
     t.string   "title",                     :null => false
     t.integer  "rating",     :default => 0, :null => false
@@ -48,6 +34,20 @@ ActiveRecord::Schema.define(:version => 20110208093203) do
   add_index "gallery_papers", ["paper_id"], :name => "index_papers_on_paper_id"
   add_index "gallery_papers", ["thumbnail_id"], :name => "index_papers_on_thumbnail_id"
 
+  create_table "invites", :force => true do |t|
+    t.integer  "paper_id",                  :null => false
+    t.integer  "user_id",                   :null => false
+    t.integer  "position",   :default => 0, :null => false
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "invites", ["paper_id", "user_id", "position"], :name => "index_invites_on_paper_id_and_user_id_and_position", :unique => true
+  add_index "invites", ["paper_id"], :name => "index_invites_on_game_id"
+  add_index "invites", ["status"], :name => "index_invites_on_status"
+  add_index "invites", ["user_id"], :name => "index_invites_on_user_id"
+
   create_table "lovers", :force => true do |t|
     t.integer "user_id",  :null => false
     t.integer "paper_id", :null => false
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20110208093203) do
     t.integer  "last_user_id"
     t.integer  "claimant_id"
     t.datetime "claimed_at"
+    t.integer  "min_rating"
     t.datetime "finished_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -110,12 +111,12 @@ ActiveRecord::Schema.define(:version => 20110208093203) do
   add_index "users", ["fb_auth"], :name => "index_users_on_fb_auth"
   add_index "users", ["fb_id"], :name => "index_users_on_fb_id", :unique => true
 
-  add_foreign_key "assignees", "papers", :name => "assignees_paper_id_fk", :dependent => :delete
-  add_foreign_key "assignees", "users", :name => "assignees_user_id_fk"
-
   add_foreign_key "gallery_papers", "galleries", :name => "gallery_papers_gallery_id_fk"
   add_foreign_key "gallery_papers", "papers", :name => "gallery_papers_paper_id_fk"
   add_foreign_key "gallery_papers", "posts", :name => "gallery_papers_thumbnail_id_fk", :column => "thumbnail_id"
+
+  add_foreign_key "invites", "papers", :name => "invites_paper_id_fk", :dependent => :delete
+  add_foreign_key "invites", "users", :name => "invites_user_id_fk"
 
   add_foreign_key "lovers", "papers", :name => "lovers_paper_id_fk", :dependent => :delete
   add_foreign_key "lovers", "users", :name => "lovers_user_id_fk", :dependent => :delete
