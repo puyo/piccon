@@ -1,0 +1,14 @@
+.paper
+  .details
+    .detail.owner
+      .heading Owner
+      .value= paper.owner.nickname
+    .detail.posts
+      .heading Posts
+      .value= paper.posts.count
+    .detail.rating
+      .heading Requirements
+      .value
+        - requirements = [paper.min_rating && "Rating #{paper.min_rating}", paper.invite_only? ? 'Invite' : nil].compact
+  - paper.posts.each do |post|
+    = post.inspect

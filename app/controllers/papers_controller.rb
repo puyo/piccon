@@ -1,9 +1,11 @@
 class PapersController < ApplicationController
 
+  before_filter :new_paper, :only => [:new, :create]
   before_filter :load_paper, :only => [:show, :edit, :update, :delete]
   before_filter :load_papers, :only => [:index]
 
   def index
+    @papers = Paper.eligible(current_user)
   end
 
   def show
@@ -14,7 +16,7 @@ class PapersController < ApplicationController
   end
 
   def create
-    if @paper = current_user.papers.create(params[:id])
+    if @paper.save(params[:paper])
       redirect_to new_paper_post_url(@paper)
     else
       render 'new'
@@ -29,5 +31,9 @@ class PapersController < ApplicationController
 
   def load_paper
     @paper = current_user.papers.find_by_id(params[:id])
+  end
+
+  def new_paper
+    @paper = current_user.papers.build
   end
 end

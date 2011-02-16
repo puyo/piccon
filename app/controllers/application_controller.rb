@@ -5,10 +5,13 @@ class ApplicationController < ActionController::Base
 
   def current_user
     if Rails.env == 'development'
-      User.find_or_create_by_id(1)
-    else
-      @current_user ||= User.find_by_id(session[:user_id]) || User.new
+      user = User.find_by_id(1)
+      user ||= User.new(:nickname => 'Developer')
+      user.id = 1
+      user.save!
+      session[:user_id] = 1
     end
+    @current_user ||= User.find_by_id(session[:user_id])
   end
 
   def signed_in?
