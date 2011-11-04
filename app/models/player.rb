@@ -8,8 +8,8 @@ class Player < ActiveRecord::Base
   belongs_to :user
   validates :status, :inclusion => STATUSES
 
-  named_scope :active, :conditions => ['status = ?', Player::STATUS_ACTIVE]
-  named_scope :ordered, :order => :order_position
+  scope :active, where(:status => Player::STATUS_ACTIVE)
+  scope :ordered, order(:order_position)
 
   def is_active?
     status == ACTIVE
