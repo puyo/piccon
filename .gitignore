@@ -7,3 +7,6 @@ compiled
 junk
 .DS_Store
 tags
+public/drawings
+public/strips
+dump*.sql

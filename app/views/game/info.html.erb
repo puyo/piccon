@@ -1,0 +1,13 @@
+<div class="game_info">
+  <% if @game.is_finished? %>
+    <h2 style="margin-bottom: 5px;"><%= @game.gallery_name %></h2>
+    <% if @game.gallery_thumbnail_post %>
+    <div class="float_right_thumb">
+      <img class="thumb" src="http://<%= BACKEND_HOST %><%= @game.gallery_thumbnail_post.image_url_path %>" />
+    </div> 
+  <% end %>
+  <% else %>
+  <h2>Game Information</h2>
+  <% end %>
+  <%= render :partial => 'info' %>
+</div>

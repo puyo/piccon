@@ -1,0 +1,12 @@
+<div class="kick">
+  <h2>Are you sure you wish to kick <fb:name useyou="true" reflexive="true" uid="<%= params[:player_id] %>" />?</h2> 
+
+  <div class="options">
+    <%= button_to "No", game_path(@game) %>
+    <%= button_to "Yes", game_kick_path(@game, :player_id => params[:player_id], :confirm => 'yes') %>
+  </div>
+
+  <h2>Game Information</h2>
+  <%= render :partial => 'info' %>
+</div>
+

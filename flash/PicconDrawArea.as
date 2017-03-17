@@ -6,15 +6,15 @@ package {
 	import flash.net.*;
 	import flash.utils.*;
 
-	public class PicconDrawArea extends Sprite {
+    public class PicconDrawArea extends Sprite {
 
 		private var _canvas:Bitmap;
 		private var _canvasData:BitmapData;
 		private var _canvasSprite:Sprite; 
-		private var _drawingOn:Boolean;
-		private var _lastX:int;
-		private var _lastY:int;
-		private var _controls:Controls;
+        private var _drawingOn:Boolean;
+        private var _lastX:int;
+        private var _lastY:int;
+        private var _controls:Controls;
 		private var	_whitePointButton:BrushButton;
 		private var	_blackPointButton:BrushButton;
 		private var	_whiteCircleButton:BrushButton;
@@ -25,13 +25,14 @@ package {
 		private var	_blackBigCircleButton:BrushButton;
 		private var	_whiteSprayButton:BrushButton;
 		private var	_blackSprayButton:BrushButton;
+		private var	_sendButton:SendButton;
 		private var	_buttons:Array;
 		private var	_buttonsRow1:Array;
 		private var	_buttonsRow2:Array;
 		private var _controlsBackground:Shape;
 		private var	_brush:Bitmap;
 
-		private static var SCALE:int = 4;
+        private static var SCALE:int = 4;
 
 		public function PicconDrawArea() {
 			stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -51,14 +52,12 @@ package {
 			_canvasSprite.scaleX = SCALE;
 			_canvasSprite.scaleY = SCALE;
 
-			initExternalInterface();
-
 			function mouseDownHandler(event:MouseEvent):void {
-				//mylog("mouseDownHandler");
-				if (event.shiftKey) { // Line tool.
+				trace("mouseDownHandler");
+				if (event.shiftKey) { //Line tool.
 					drawLine(_lastX, _lastY, event.localX, event.localY, 0x000000);
 				}
-				// Mouse button is down. Flag drawing on.
+				//Mouse button is down. Flag drawing on.
 				setDrawingOn(true, event);
 				drawAt(event.localX, event.localY);
 			}
@@ -69,7 +68,7 @@ package {
 					var localY:int = int(event.localY);
 					if (localX != _lastX || localY != _lastY){
 						drawLine(_lastX, _lastY, localX, localY, 0x000000);
-						//mylog("line", _lastX, _lastY, "==>", localX, localY);
+						trace("line", _lastX, _lastY, "==>", localX, localY);
 						_lastX = localX;
 						_lastY = localY;
 					}
@@ -77,22 +76,22 @@ package {
 			}
 
 			function mouseOutHandler(event:MouseEvent):void {
-				//mylog("mouseOutHandler", event.localX, event.localY);
+				trace("mouseOutHandler");
 				setDrawingOn(false, event);
 			}
 
 			function mouseOverHandler(event:MouseEvent):void {
-				//mylog("mouseOverHandler");
+				trace("mouseOverHandler");
 				//Check if we are still drawing when the mouse re-enters the stage
 				setDrawingOn(event.buttonDown, event);
 			}
 
 			function mouseWheelHandler(event:MouseEvent):void {
-				//mylog("mouseWheelHandler delta: " + event.delta);
+				trace("mouseWheelHandler delta: " + event.delta);
 			}
 
 			function mouseUpHandler(event:MouseEvent):void {
-				//mylog("mouseUpHandler");
+				trace("mouseUpHandler");
 				//Mouse button is up. Flag drawing off.
 				setDrawingOn(false, event);
 			}
@@ -243,25 +242,25 @@ package {
 				_blackPointButton,
 				_whiteCircleButton,
 				_blackCircleButton,
-				_whiteBigCircleButton,
-				_blackBigCircleButton,
 				_whiteSquareButton,
 				_blackSquareButton,
+				_whiteBigCircleButton,
+				_blackBigCircleButton,
 				_whiteSprayButton,
 				_blackSprayButton,
 				];
 			_buttonsRow1 = [
 				_blackPointButton,
 				_blackCircleButton,
-				_blackBigCircleButton,
 				_blackSquareButton,
+				_blackBigCircleButton,
 				_blackSprayButton,
 				];
 			_buttonsRow2 = [
 				_whitePointButton,
 				_whiteCircleButton,
-				_whiteBigCircleButton,
 				_whiteSquareButton,
+				_whiteBigCircleButton,
 				_whiteSprayButton,
 				];
 
@@ -271,7 +270,7 @@ package {
 
 			function handleButtonClick(event:MouseEvent):void {
 				var clicked:BrushButton = event.target as BrushButton;
-				//mylog("handleButtonClick");
+				trace("handleButtonClick");
 				_brush = clicked.brush;
 				for each (var b:BrushButton in _buttons) {
 					if (b != clicked) {
@@ -290,60 +289,30 @@ package {
 			_controlsBackground.graphics.drawRect(0, 0, 1, 1);
 			_controlsBackground.graphics.endFill();
 
+			_sendButton = new SendButton();
+			_sendButton.addEventListener(MouseEvent.CLICK, handleSendClick);
+
+			function handleSendClick(event:MouseEvent):void{
+				_sendButton.removeEventListener(MouseEvent.CLICK, handleSendClick);
+				sendToServer();
+				_sendButton.turnOn();
+			}
+
 			_controls = new Controls();
 			_controls.addChild(_controlsBackground);
+			_controls.addChild(_sendButton);
 			for each (var b:BrushButton in _buttons) {
 				_controls.addChild(b);
 			}
 
 			addChild(_canvasSprite);
 			addChild(_controls);
-
+			
 			stage.addEventListener("resize", handleResize);
 			arrange();
-
+			
 			function handleResize(event:Event):void {
 				arrange();
-			}
-		} // constructor
-
-		private function initExternalInterface():void {
-			if (ExternalInterface.available) {
-				ExternalInterface.addCallback("getImageData", getImageData);
-				ExternalInterface.addCallback("setImageData", setImageData);
-				ExternalInterface.call("drawAreaReady");
-			}
-			function getImageData():String {
-				var result:String = "";
-				var pixel:uint;
-				var j:int;
-				var i:int;
-				for(j = 0; j < _canvasData.height; j++) {
-					for(i = 0; i < _canvasData.width; i++) {
-						pixel = _canvasData.getPixel(i, j);
-						result += (pixel != 0 ? "1" : "0");
-					}
-				}
-				return result;
-			}
-			function setImageData(data:String):void {
-				//mylog("setImageData", data);
-				var index:uint = 0;
-				var j:int;
-				var i:int;
-				var white:uint = 16777215;
-				for(j = 0; j < _canvasData.height; j++) {
-					for(i = 0; i < _canvasData.width; i++) {
-						if (index >= data.length) {
-							_canvasData.setPixel(i, j, white);
-						} else if (data.charAt(index) == "0") {
-							_canvasData.setPixel(i, j, 0);
-						} else {
-							_canvasData.setPixel(i, j, white);
-						}
-						++index;
-					}
-				}
 			}
 		}
 
@@ -351,42 +320,91 @@ package {
 			ExternalInterface.call.apply(ExternalInterface, ["console.log"].concat(args));
 		}
 
+	    public function sendToServer():void {
+			var bytes:ByteArray = PNGEncoder.encode(_canvasData);
+			trace("sendToServer bytes =", bytes.length);
+
+			var params:Object = loaderInfo.parameters;
+			var requestParams:Object = {};
+			var fbKeys:Object = [
+				"fb_sig_in_iframe",
+				"fb_sig",
+				"fb_sig_expires",
+				"fb_sig_added",
+				"fb_sig_api_key",
+				"fb_sig_profile_update_time",
+				"fb_sig_user",
+				"fb_sig_time"
+			];
+
+			for (var s:String in fbKeys) {
+				var fbKey:String = fbKeys[s];
+				trace("DEBUG", s, fbKey, params[fbKey]);
+				requestParams[fbKey] = params[fbKey];
+			}
+
+			var urlRequest:URLRequest = new URLRequest();
+			urlRequest.url = "/game/post/" + String(params['game_id']);
+			urlRequest.contentType = 'multipart/form-data; boundary=' + UploadPostHelper.getBoundary();
+			urlRequest.method = URLRequestMethod.POST;
+			urlRequest.data = UploadPostHelper.getPostData("post.png", bytes, requestParams);
+			urlRequest.requestHeaders.push( new URLRequestHeader( 'Cache-Control', 'no-cache' ) );
+
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
+			urlLoader.addEventListener(Event.COMPLETE, onComplete);
+			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onError);
+			urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onError);
+			urlLoader.addEventListener(ProgressEvent.PROGRESS, onProgress);
+			urlLoader.load(urlRequest);
+
+			function onComplete(event:Event):void{
+				trace("onComplete");
+				ExternalInterface.call("showGame");
+			}
+			function onProgress(event:ProgressEvent):void{
+				trace("onProgress");
+			}
+			function onError(event:Event):void{
+				trace("onError");
+			}
+		}
+
 		private function arrange():void {
-			//mylog("arrange", stage.width, stage.height);
+			trace("arrange", stage.width, stage.height);
 
 			var canvasWidth:uint = 512;
 			var canvasHeight:uint = 512;
-			var controlsWidth:uint = 128;
-			var controlsHeight:uint = canvasHeight;
+			var controlsWidth:uint = canvasWidth;
+			var controlsHeight:uint = 128;
 
 			_controlsBackground.width = controlsWidth;
 			_controlsBackground.height = controlsHeight;
 
-			_controls.x = canvasHeight;
-			_controls.y = 0;
+			_controls.y = canvasHeight;
 
 			// controls
 
 			var i:int = 0;
 			var b:BrushButton;
 			for each (b in _buttonsRow1) {
-				b.x = 10;
-				b.y = 10 + i * (b.width + 10);
+				b.x = 10 + i * (b.width + 10);
+				b.y = 10;
 				i++;
 			}
 			i = 0;
 			for each (b in _buttonsRow2) {
-				b.x = 10 + b.height + 10;
-				b.y = 10 + i * (b.width + 10);
+				b.x = 10 + i * (b.width + 10);
+				b.y = 10 + b.height + 10;
 				i++;
 			}
+
+			_sendButton.x = controlsWidth - _sendButton.width - 10;
+			_sendButton.y = 10;
 		}
 
 		private function draw():void {
-			//mylog("draw");
-		}
-
-		private function mouseDraw(event:MouseEvent):void {
+			trace("draw");
 		}
 
 		private function setDrawingOn(on:Boolean, event:MouseEvent):void{
@@ -485,6 +503,44 @@ class DynButton extends Sprite {
 		//graphics.beginFill(0xff0000);
 		graphics.drawRoundRect(0, 0, _width, _height, 10, 10);
 		graphics.endFill();
+	}
+}
+
+class SendButton extends DynButton {
+
+	function SendButton() {
+		mouseChildren = false;
+		_width = 60;
+		_height = 95;
+
+		var format:TextFormat = new TextFormat();
+		format.font = "Helvetica";
+		format.color = 0xffffff;
+		format.size = 16;
+		format.bold = true;
+		format.align = TextFormatAlign.CENTER;
+
+		var label:TextField = new TextField();
+		label.background = false;
+		label.border = false;
+		label.text = "Send";
+		label.setTextFormat(format);
+		label.width = _width - 10;
+		label.height = 20;
+
+		label.x = (_width - (_width - 10))/2;
+		label.y = (_height - label.height)/2;
+
+		var bm:Bitmap = new Bitmap();
+
+		addChild(label);
+
+		redraw();
+	}
+
+	public function turnOn():void {
+		_on = true;
+		redraw();
 	}
 }
 

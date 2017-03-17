@@ -1,0 +1,23 @@
+<% if flash[:notices] or flash[:warnings] or flash[:errors] %>
+  <% if flash[:notices] %>
+    <ul class="notices">
+      <% flash[:notices].to_a.each do |notice| %>
+        <li><%=h notice %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <% if flash[:warnings] %>
+    <ul class="warnings">
+      <% flash[:warnings].to_a.each do |warning| %>
+        <li><%=h warning %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <% if flash[:errors] %>
+    <ul class="errors">
+      <% flash[:errors].to_a.each do |error| %>
+        <li><%=h error %></li>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>

@@ -1,0 +1,20 @@
+<div class="game">
+  <%= render :partial => '/globals/notices' %>
+
+  <% if @game.is_turn?(fbsession.session_user_id) %>
+    <div class="yourturn">
+      <div class="instructions">
+        Please describe the picture shown below: 
+      </div>
+      <img class="drawing" src="http://<%= BACKEND_HOST %><%= @game.image_url_path %>" width="512" height="512"  alt="Your friend's drawing."/>
+      <form action="<%= APP_URL %>/game/post" method="post">
+        <label for="text">Your description:</label>
+        <input class="text" type="text" name="text" maxlength="255"/>
+        <input type="hidden" name="id" value="<%= @game.id %>"/>
+        <input class="submit" type="submit" value="Send"/>
+      </form>
+    </div>
+  <% end %>
+
+  <%= render :partial => 'short_info' %>
+</div>

@@ -1,0 +1,29 @@
+<div class="preview">
+  <% if game.gallery_thumbnail_post %>
+  <a href="<%= game_path(game) %>"><img class="preview_thumb" src="http://<%= BACKEND_HOST %><%= game.gallery_thumbnail_post.image_url_path %>" /></a>
+<% end %>
+  <div class="preview_body">
+    <h2><%= link_to game.gallery_name, game_path(game) %></h2>
+    <p class="preview_para">Players: <%= game.players.in_order.map{|player| 
+        "<fb:name ifcantsee=\"someone\" capitalize=\"true\" useyou=\"true\" uid=\"#{player.user_id}\" />" 
+      }.join(', ') %></p>
+      <p class="preview_para"><%= link_to game.comment_count.to_s + " comments", game_path(game) + "#comments_" + game.id.to_s %> on this game.</p>
+  </div>
+  <div class="links">
+    <% if game.status == 30 %>
+      <fb:dialog id="r18_confirm_dialog_<%= game.id %>" cancel_button=1>  
+        <fb:dialog-title>Restrict this game to adults 18 years and older</fb:dialog-title> 
+        <fb:dialog-content>
+        <form id="set_privacy_<%= game.id %>" method="post" action="<%= game_set_privacy_path(game) %>" >
+          Marking a game as R18 cannot be undone. Are you sure you want to restrict viewing of this game?
+          <input type="hidden" value="R18" name="rating_selection" />
+          <input type="hidden" value="<%= params[:action] %>" name="parent_view" />
+        </form>
+        </fb:dialog-content>  
+        <fb:dialog-button type="submit" value="Yes" form_id="set_privacy_<%= game.id %>"/>
+      </fb:dialog> 
+      <a href="#" clicktoshowdialog="r18_confirm_dialog_<%= game.id %>">Move to R18+ gallery</a> 
+  <% end %>
+  </div>
+  <div class="preview_game_id"><%= link_to "Game ID: " + game.id.to_s, game_info_path(game) %></div>
+</div>

@@ -1,0 +1,41 @@
+<div class="add_player_title">
+  <h2>Add a new player to this game</h2>
+</div>
+
+<div class="current_players_block_add_player">
+  <h2>Current Players</h2>
+
+  <div class="current_players_list">
+    <% @current_player_ids.each_with_index do |player_id, i| %> 
+      <div>
+        <fb:profile-pic uid="<%= player_id %>" size="square" linked="true" />
+        <span class="name"><fb:name useyou="false" uid="<%= player_id %>"/></span>
+      </div>
+      <div class="insert_position_marker">
+        &lt;&mdash; Position <%= i + 2 %> 
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="add_player_block_add_player">
+
+  <form method="post" action="<%= game_add_player_path(@game) %>">
+    <h2>New Player to Add</h2>
+    <div class="add_player_selector"><fb:friend-selector exclude_ids="<%= @current_player_ids.join(',') %>" /></div>
+
+    <h2>Insert player at:</h2>
+    <select name="insert_position" class="add_player_selector">
+      <% @current_player_ids.each_with_index do |player_id, i| %> 
+        <option value="<%= i + 1 %>">Position <%= i + 2 %></option>
+      <% end %>
+    </select>
+
+    <p class="add_player_button"><input type="submit" value="Add Player"/></p> 
+
+  </form>
+</div>
+
+<div class="game_info_block_add_player">
+  <h2>Game Information</h2>
+  <%= render :partial => 'info' %>
+</div>

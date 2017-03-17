@@ -1,0 +1,23 @@
+<div class="leave">
+  <% if @game.players.active.size == 1 %>
+    <h2>You are the last player in this game.</h2>
+
+    <div class="options">
+      <% if @game.posts.any? %>
+        <p><%= button_to "Finish the game and show me the result", game_leave_path(@game, :confirm => 'finish_early') %></p>
+      <% end %>
+      <p><%= button_to "Quit and delete this game forever", game_leave_path(@game, :confirm => 'destroy') %></p>
+      <p><%= button_to "Continue playing", game_path(@game) %></p>
+    </div>
+  <% else %>
+    <h2>Are you sure you wish to leave this game?</h2>
+
+    <div class="options">
+      <p><%= button_to "No, continue playing", game_path(@game) %></p>
+      <p><%= button_to "Yes, quit game", game_leave_path(@game, :confirm => 'leave') %></p>
+    </div>
+  <% end %>
+
+  <h2>Game Information</h2>
+  <%= render :partial => 'info' %>
+</div>

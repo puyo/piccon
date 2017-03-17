@@ -1,0 +1,13 @@
+<fb:comments xid="<%= @game.id %>"
+<% if @game.owner_id %>
+  send_notification_uid="<%= @game.owner_id %>"
+<% end %>
+numposts="5" canpost="true"  
+<% if @game.owner_id == fbsession.session_user_id.to_i %>
+  candelete="true" 
+<% else %>
+  candelete="false"
+<% end %>
+>
+<fb:title>Piccon Comments for Game <%= @game.id %></fb:title> 
+</fb:comments>

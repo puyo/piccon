@@ -1,0 +1,36 @@
+<div class="display_whole_page_background">
+  <div class="finished_games">
+    <div class="gallery_header">
+      <%= link_to "Current Games", dev_current_games_path %>
+      <h1>Developer Screen - Finished Games</h1>
+
+      <%= will_paginate @dev_finished_games, :param_name => 'fin_page', :params => { :order => params[:order] }  %>
+      <% if @dev_finished_games.any? %>
+        <script> 
+          <!-- 
+          function sort(obj) {
+            document.setLocation("<%= dev_finished_games_path %>?order=" + obj.getValue() );
+          }
+          //--> 
+        </script> 
+
+        <form>
+          Sort by:
+          <select id="sort_by" onchange="sort(this); return false;">
+          <option value="finished" <% if params[:order] == "finished" %> selected="selected" <% end %> >Date Finished</option>
+          <option value="recent" <% if params[:order] == "recent" %> selected="selected" <% end %> >Date Published</option>
+          <option value="comments" <% if params[:order] == "comments" %> selected="selected" <% end %> >Number of Comments</option>
+          <option value="recent_comments" <% if params[:order] == "recent_comments" %> selected="selected" <% end %> >Latest Comments</option>
+          <option value="started" <% if params[:order] == "started" %> selected="selected" <% end %> >Date Started</option>
+          <option value="random" <% if params[:order] == "random" %> selected="selected" <% end %> >Random Order</option>
+          </select>
+        </form>
+      </div>
+      <% for game in @dev_finished_games %>
+        <%= render :partial => '/game/preview', :locals => { :game => game } %>
+      <% end %>
+    <% else %>
+      You haven't finished any games yet.
+    <% end %>
+  </div>
+</div>

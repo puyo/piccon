@@ -1,0 +1,86 @@
+<script> 
+  <!-- 
+
+  function draw_button_on(obj) {
+    obj.setSrc="<%= image_path('draw_orange.png') %>";
+  }
+
+  function draw_button_off(obj) {
+    obj.setSrc="<%= image_path('draw.png') %>";
+  }
+
+  function write_button_on(obj) {
+    obj.setSrc="<%= image_path('write_orange.png') %>";
+  }
+
+  function write_button_off(obj) {
+    obj.setSrc="<%= image_path('write.png') %>";
+  }
+  //--> 
+</script> 
+
+<div class="display_whole_page_background">
+  <div class="decoration">
+    <% @example_drawing_url_paths.each_with_index do |path, i| %>
+      <img src="http://<%= BACKEND_HOST %><%= path %>" class="pic <%= if (i % 2) == 0 then 'even' end %>" />
+    <% end %>
+  </div>
+  <div class="my_turn_games">
+    <%= will_paginate @my_turn_games, :param_name => 'my_page', :params => { :cur_page => params[:cur_page], :fin_page => params[:fin_page] } %>
+    <% if @my_available_open_games > 0 %>
+      <h2>Public Games</h2>
+      <div class="pie_chart_image">
+        <div class="offset_<%= 16*@my_available_open_draw_games/@my_available_open_games %> piechart" style="background-image: url('<%= image_path('piechart.png') %>')">
+        </div>
+      </div>
+      <div class="beside_pie_chart">
+        <p>
+        <% if @my_available_open_draw_games > 0 %>
+          <a href="<%= draw_path %>"><img src="<%= image_path('draw.png') %>" alt="Draw a picture in a public game!" onmouseover="draw_button_on(this);" onmouseout="draw_button_off(this);"></a>
+        <% end %>
+        </p>
+        <p>
+        <% if @my_available_open_write_games > 0 %>
+          <a href="<%= write_path %>"><img src="<%= image_path('write.png') %>" alt="Write a description in a public game!" onmouseover="write_button_on(this);" onmouseout="write_button_off(this);"></a>
+        <% end %>
+        </p>
+      </div>
+      <div class="below_pie_chart">
+        <p>
+        <%= 100*@my_available_open_draw_games/@my_available_open_games %>% Drawing turns,  <%= 100 - 100*@my_available_open_draw_games/@my_available_open_games %>% Writing turns.
+        </p>
+      </div>
+    <% end %>
+      <h2>Private Games</h2>
+      <% if @my_turn_games.any? %>
+        <p>
+        <%= link_to('Start a new game with your friends', new_game_path) %>
+        </p>
+      <h2>Play your turn!</h2>
+      <%= render :partial => '/globals/game_list', :locals => { :games => @my_turn_games, :finished => false, :play => true} %>
+    <% else %>
+      <p>
+      It is not your turn in any of your current games. Do you want to <%= link_to('start a new game', new_game_path) %>?
+      </p>
+    <% end %>
+  </div>
+  <div class="short_current_games">
+    <%= will_paginate @short_current_games, :param_name => 'cur_page', :params => { :my_page => params[:my_page], :fin_page => params[:fin_page] }  %>
+    <h2><%= link_to 'Current Games', current_games_path, :title => "Click on the title for the current games page." %></h2>
+
+    <% if @short_current_games.any? %>
+      <%= render :partial => '/globals/game_list', :locals => { :games => @short_current_games, :finished => false, :play => false } %>
+    <% else %>
+      You don't have any current games yet. <%= link_to('Start a new game!', new_game_path) %>
+    <% end %>
+  </div>
+  <div class="short_finished_games">
+    <%= will_paginate @short_finished_games, :param_name => 'fin_page', :params => { :my_page => params[:my_page], :cur_page => params[:cur_page] }  %>
+    <h2><%= link_to 'Finished Games', finished_games_path, :title => "Click on the title for the finished games page." %></h2>
+    <% if @short_finished_games.any? %>
+      <%= render :partial => '/globals/game_list', :locals => { :games => @short_finished_games, :finished => true } %>
+    <% else %>
+      You haven't finished any games yet.
+    <% end %>
+  </div>
+</div>

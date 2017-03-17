@@ -1,0 +1,68 @@
+<div class="gallery_header">
+  <h1>Public Gallery</h1>
+
+  <ul>
+    <% if @rating == "g" %> 
+      <li>General</li>
+    <% else %>
+      <li><%= link_to("General", gallery_path(:rating => "g", :order => params[:order])) %></li>
+    <% end %>
+
+    <fb:18_plus>
+
+    <% if @rating == "r18" %> 
+      <li>Restricted R18+</li>
+    <% else %>
+      <li><%= link_to("Restricted R18+", gallery_path(:rating => "r18", :order => params[:order])) %></li>
+    <% end %>
+
+    <% if @rating == "all" %> 
+      <li>All</li>
+    <% else %>
+      <li><%= link_to("All", gallery_path(:rating => "all", :order => params[:order])) %></li>
+    <% end %>
+
+    </fb:18_plus>
+  </ul>
+  
+<script> 
+  <!-- 
+
+  function sort(obj) {
+    document.setLocation("<%= gallery_path(:rating => params[:rating]) %>?order=" + obj.getValue() );
+  }
+
+  //--> 
+</script> 
+
+<form>
+Sort by:
+<select id="sort_by" onchange="sort(this); return false;">
+<option value="recent" <% if params[:order] == "recent" %> selected="selected" <% end %> >Date Published</option>
+  <option value="comments" <% if params[:order] == "comments" %> selected="selected" <% end %> >Number of Comments</option>
+  <option value="recent_comments" <% if params[:order] == "recent_comments" %> selected="selected" <% end %> >Latest Comments</option>
+  <option value="started" <% if params[:order] == "started" %> selected="selected" <% end %> >Date Started</option>
+  <option value="finished" <% if params[:order] == "finished" %> selected="selected" <% end %> >Date Finished</option>
+  <option value="random" <% if params[:order] == "random" %> selected="selected" <% end %> >Random Order</option>
+</select>
+</form>
+
+  <%= will_paginate @games, :param_name => 'page', :params => { :order => params[:order] } %>
+</div>
+
+<% if @rating == "r18" or @rating == "all" %> 
+  <fb:18_plus>
+<% end %>
+
+<% for game in @games %>
+  <%= render :partial => '/game/preview', :locals => { :game => game } %>
+<% end %>
+
+<% if @rating == "r18" or @rating == "all" %> 
+  <fb:else> 
+  <div>
+  You need to be logged in and over 18 to view a restricted gallery.
+  </div>
+  </fb:else> 
+  </fb:18_plus>
+<% end %>

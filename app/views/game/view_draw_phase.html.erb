@@ -1,0 +1,14 @@
+<div class="game">
+  <%= render :partial => '/globals/notices' %>
+
+  <% if @game.is_turn?(fbsession.session_user_id) %>
+    <div class="instructions">
+      Please draw a picture of <span id="description"><%= @game.description %></span>
+    </div>
+    <div class="draw_area">
+      <fb:iframe src="http://<%= BACKEND_HOST %>/game/iframe/<%= @game.id %>" width="512" height="640" scrolling="no" resizable="false" frameborder="0"/>
+    </div>
+  <% end %>
+
+  <%= render :partial => 'short_info' %>
+</div>

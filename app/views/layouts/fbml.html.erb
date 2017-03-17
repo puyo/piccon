@@ -1,0 +1,14 @@
+<%= stylesheet('screen.css') %>
+<div id="page">
+  <div class="title">
+    <%= link_to image_tag('piccon.png'), 'http://www.facebook.com/apps/application.php?id=8334582053' %> 
+    <ul>
+      <li><%= link_to('My Games', games_path) %></li>
+      <li><%= link_to('New Game', new_game_path) %></li>
+      <li><%= link_to('Invite Friends', invite_path) %></li>
+      <li><%= link_to('Gallery', gallery_path(:rating => 'g')) %></li>
+      <li><%= link_to('Help', help_path) %></li>
+    </ul>
+  </div>
+  <%= yield %>
+</div>

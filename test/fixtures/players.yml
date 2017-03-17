@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+greg:
+  game: lucyandgreg
+  user_id: 1
+  status: 0
+
+lucy:
+  game: lucyandgreg
+  user_id: 2
+  status: 0

@@ -1,0 +1,19 @@
+<div class="display_whole_page_background">
+  <div class="left_block_help">
+    <h2>Welcome to Piccon!</h2>
+    <p>
+    Thank you for joining the Piccon community.
+  <% if @friends_with_app.any? %> <%= @friends_with_app.size %> of your friends <% if @friends_with_app.size == 1 %> has <% else %> have <% end %> already added Piccon. <% end %>
+    </p>
+
+    <% if @friends_with_app.any? %>
+      <p>
+      <% for friend in @friends_with_app %>
+        <fb:profile-pic uid="<%= friend %>" size="square" linked="true" class="welcome_friend" />
+      <% end %>
+      </p>
+    <% end %>
+    <%= render :partial => 'short_help' %>
+  </div>
+  <%= render :partial => 'example_game_help' %>
+</div>

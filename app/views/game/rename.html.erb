@@ -1,0 +1,59 @@
+<div>
+
+  <script> 
+  <!-- 
+
+  function select_text_field(obj) {
+    document.getElementById('name_text_field').setChecked("checked");
+    obj.setValue("");
+    obj.focus();
+  }
+
+  //--> 
+</script> 
+
+
+  <%= render :partial => 'preview', :locals => { :game => @game } %>
+  <form method="post" action="<%= game_rename_path(@game) %>">
+    <div class="thumb_selector">
+      <% for thumb_post in @game.drawing_posts %>
+        <div>
+        <input class="radio_button" id="<%= thumb_post %>" value="<%= thumb_post.id %>" type="radio" name="thumb_selection" <% if @game.gallery_thumbnail_post == thumb_post %> checked="checked" <% end %>/>
+          <label for="<%= thumb_post %>">
+            <img class="thumb" src="http://<%= BACKEND_HOST %><%= thumb_post.image_url_path %>" />
+          </label>
+        </div>
+      <% end %>
+    </div>
+
+    <table class="name_selector">
+
+      <tr class="no_padding">
+        <td class="no_padding" class="radio_button"><input class="no_padding" type="radio" name="name_selection" id="name_text_field" value="use_text_field"/></td>
+        <td class="no_padding"><div class="text_field_div">
+              <input type="text" class="text_field" name="text_field" size="36" maxlength="255" value="Type here to enter your own title for this game." onclick="select_text_field(this); return false" />
+      </div></td>
+    </tr>
+    <% if !@game.descriptions.include?(@game.gallery_name) %>
+      <tr class="no_padding">
+      <td class="no_padding" class="radio_button"><input class="no_padding" type="radio" name="name_selection" id="current_gallery_name" value="<%=h @game.gallery_name %>" checked="checked" /></td>
+        <td class="no_padding"><div class="name_block"><label class="description_label" for="current_gallery_name">
+              <%= @game.gallery_name %>
+        </label></div></td>
+      </tr>
+    <% end %>
+    <% @game.descriptions.each_with_index do |description, i| %>
+      <% id = "desc_#{i}" %>
+      <tr class="no_padding">
+      <td class="no_padding" class="radio_button"><input class="no_padding" type="radio" name="name_selection" id="<%= id %>" value="<%=h description.text %>" <% if @game.gallery_name == description.text %> checked="checked" <% end %> /></td>
+        <td class="no_padding"><div class="name_block"><label class="description_label" for="<%= id %>">
+              <%= description.text %>
+        </label></div></td>
+      </tr>
+    <% end %>
+  </table>
+  <div class="rename_submit"> <input type="submit" value="Save changes to thumbnail and title"/> </div>
+</form>
+
+
+</div>

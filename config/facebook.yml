@@ -1,0 +1,17 @@
+development:
+    key: ENV['FB_KEY']
+    secret: ENV['FB_SECRET']
+    canvas_path: /piccondev/
+    callback_path: /
+
+test:
+    key: YOUR_API_KEY_HERE
+    secret: YOUR_API_SECRET_HERE
+    canvas_path: /piccon/
+    callback_path: /path/to/your/callback/
+
+production:
+    key: ENV['FB_KEY']
+    secret: ENV['FB_SECRET']
+    canvas_path: /piccongame/
+    callback_path: /

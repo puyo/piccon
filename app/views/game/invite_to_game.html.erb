@@ -1,0 +1,12 @@
+<div class="invite_to_game">
+  <p>
+    We've noticed that some of the friends you've started this game with do not
+    have Piccon installed.
+  </p>
+  <%= render :partial => '/globals/invite_form', :locals => { 
+    :exclude_ids => @friends_to_exclude, 
+    :action => game_invited_path(@game),
+    :next_url => game_path(@game),
+  } %>
+</div>
+

@@ -1,0 +1,64 @@
+<table>
+  <tr>
+    <th>Status:</th>
+    <td>
+      <% if @game.is_finished? %>
+        This game is finished. <%= link_to "View result", game_path(@game) %>
+      <% elsif @game.is_turn?(fbsession.session_user_id) %>
+        Other players are waiting for you. <%= link_to '<span class="your_turn">Take your turn</span>', game_path(@game) %>
+      <% elsif @game.is_started? and @game.owner.nil? %>
+        Waiting for the next player.
+      <% elsif @game.is_started? and @game.current_turn_player.user_id != fbsession.session_user_id.to_i %>
+        <%= link_to "Waiting for <fb:name useyou=\"false\" ifcantsee=\"someone\" uid=\"#{@game.current_turn_player.user_id}\" />", game_path(@game) %>
+        for <%= time_ago_in_words(@game.updated_at) %>
+        <%= options(@game) %>
+      <% end %>
+    </td>
+  </tr>
+  <% if !@game.owner.nil? %>
+  <tr>
+    <th>Run by:</th>
+    <td>
+      <fb:name useyou="true" ifcantsee="someone" uid="<%= @game.owner.user_id %>" capitalize="true" />
+    </td>
+  </tr>
+<% end %>
+  <% if @game.invited_players.any? %>
+    <tr>
+      <th>Invited players:</th>
+      <td><%= @game.invited_players.in_order.map{|player| 
+        out = "<fb:name ifcantsee=\"someone\" capitalize=\"true\" useyou=\"true\" uid=\"#{player.user_id}\" />" 
+        if @game.owner_id == fbsession.session_user_id.to_i
+          out << " (" << link_to('Kick', game_kick_path(@game, :player_id => player.user_id)) << ")"
+        end
+        out
+      }.join(', ') %></td>
+  </tr>
+<% end %>
+<tr>
+  <th>Rounds played:</th>
+  <td><%= @game.posts.size %> out of <%= @game.length %></td>
+</tr>
+<tr>
+  <th>Started:</th>
+  <td><%= time_ago_in_words(@game.created_at).capitalize %> ago</td>
+</tr>
+<tr>
+  <th>Last activity:</th>
+  <td><%= time_ago_in_words(@game.updated_at).capitalize %> ago</td>
+</tr>
+<tr>
+  <th>Game ID:</th>
+  <td><%= @game.id %></td>
+</tr>
+<% if @game.is_finished? %>
+  <tr>
+    <th>Comments:</th>
+    <td><%= link_to @game.comment_count.to_s + " comments", game_path(@game) %></td>
+  </tr>
+<% end %>
+<tr>
+  <th>Options:</th>
+  <td><%= render :partial => 'options' %></td>
+</tr>
+</table>

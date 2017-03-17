@@ -1,0 +1,191 @@
+#page { background-color: #ff9000; margin: 0 0 0 0; padding: 20px; }
+#page div.title,
+#page div.my_turn_games,
+#page div.new_game,
+#page div.new_game_form,
+#page div.current_games,
+#page div.short_current_games,
+#page div.short_finished_games,
+#page div.finished_game,
+#page div.game_info,
+#page div.saved_to_photos,
+#page div.help,
+#page div.info,
+#page div.leave,
+#page div.left,
+#page div.deleted,
+#page div.kick,
+#page div.gallery_header,
+#page div.gallery_game,
+#page div.friends_with_piccon,
+#page div.skip,
+#page div.invite_to_game,
+#page div.invite,
+.add_player_title { background-color: white; border: 1px solid black; margin-bottom: 20px; padding: 5px 10px 5px 10px; width: 584px; }
+#page div.my_turn_games,
+#page div.new_game,
+#page div.short_current_games,
+#page div.short_finished_games { width: 412px; overflow: auto; }
+#page div.instructions { width: 492px; margin: 10px auto 5px auto; border: 1px solid black; background-color: white; padding: 5px 10px 5px 10px; font-size: 140%; font-weight: bold; overflow: auto; max-height: 100px; }
+#page div.decoration { display: block; float: right; background-color: #ff9000; margin: 0; padding: 0 0px 0 0px; border: 0px none; width: 150px; }
+#page:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+
+#page .decoration .pic { display: block; width: 128px; height: 128px; background-color: white; margin-bottom: 20px; border: 1px solid black; }
+#page .decoration .even { margin-left: 20px; }
+
+#page .prog-border { height: 8px; background: white; padding: 0px; border: 1px solid black; }
+#page .prog-bar { height: 8px; background: #5D7CBA; }
+
+td { padding-left: 0.5em; padding-right: 0.5em; }
+th { font-weight: bold; vertical-align: top; text-align: left; }
+
+td.head .details { display: block; font-weight: normal; }
+
+.games_list th { vertical-align: middle; padding: 0 5px 2px 5px; font-weight: bold; /* background-color: #ff9000; */ /* background-color: #966e3a; */ /* background-color: #ca7f1d; */ background-color: #5d7cba; color: white; }
+.games_list td div { max-height: 30px; overflow: hidden; }
+.games_list td div:hover { overflow: auto; }
+.games_list td div.player_list { }
+
+.error { color: red; }
+.warning { color: #a80; }
+
+tr.even0{ }
+tr.even1{ background-color: #f7f7f7; }
+
+body.iframe { margin: 0; padding: 0; }
+
+.game { margin-bottom: 20px; }
+.game iframe { margin: 0; padding: 0; border: 1px solid black; }
+.game .draw_area { text-align: center; margin-left: auto; margin-right: auto; width: 512px; margin-bottom: 10px; }
+
+.finished_game img.strip { border: 1px solid #bbb; margin: 10px auto 10px auto; }
+.finished_game div.strip { overflow: auto; }
+
+.drawing { border: 1px solid black; }
+
+.yourturn { width: 512px; margin: 0 auto 10px auto; }
+.yourturn form { display: block; width: 512px; }
+.yourturn input,
+.yourturn label { display: block; float: left; font-size: 140%; color: black; font-weight: bold; }
+.yourturn label { width: 150px; margin-right: 10px; margin-top: 1px; }
+.yourturn input.text { width: 410px; margin-right: 10px; border: 1px solid black; padding-left: 5px; padding-right: 5px; clear: both; font-weight: normal; }
+.yourturn input.submit { width: 70px; float: right; border: 1px solid black; }
+.yourturn form:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+
+span.action_required { font-weight: bold; }
+
+.title img,
+.gallery_header h1 { margin-top: 5px; margin-bottom: 5px; float: left; }
+.title ul,
+.gallery_header ul,
+.gallery_header form { margin: 5px 0 0 0; padding: 0; float: right; clear: right; }
+.title ul li,
+.gallery_header ul li { list-style-type: none; display: inline; margin-right: 10px; }
+.gallery_header .pagination { clear: right; margin-top: 5px; }
+.gallery_header select { padding: 0; }
+.title:after,
+.gallery_header:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+
+.ads { clear: both; margin: 20px auto 20px auto; width: 468px; height: 60px; border: 0 none; padding: 0px; }
+.ads iframe { margin: 0 auto 0 auto; }
+
+.kick { margin: 10px; }
+.options { margin: 0; }
+.options_list { margin: 0; padding: 0; }
+
+.leave .options { margin: 10px; }
+.button-to { display: inline; }
+.button-to div { display: inline; }
+
+.finished_game .options { padding: 0; margin: 0; }
+.options li { list-style-type: none; margin-bottom: 5px; }
+
+.share { margin-bottom: 5px; }
+
+.notices,
+.errors,
+.warnings { clear: both; list-style-type: none; margin: 0; padding: 0; }
+.notices li,
+.errors li,
+.warnings li { padding: 5px; }
+.errors { color: #800; }
+.notices { color: #000; }
+.warnings { color: #a80; }
+
+.pagination { float: right; }
+
+.friends_with_piccon { float: left; display: block; width: 160px !important; margin-left: 20px; }
+.friends_with_piccon h2 { margin-bottom: 5px; }
+.friends_with_piccon .friends { overflow: auto; height: 230px; }
+.friends_with_piccon .friend { margin-bottom: 5px; }
+.friends_with_piccon .friend .name { display: block; width: 80px; height: 50px; overflow: hidden; margin-left: 5px; float: left;}
+.friends_with_piccon .friend img { width: 50px; display: block; float: left; }
+
+.new_game_form { float: left; display: block; width: 380px !important; }
+
+.left_block_help { background-color: white; border: 1px solid black; margin-bottom: 20px; padding: 5px 10px 5px 10px; float: left; display: block; width: 380px;  }
+.right_block_help { background-color: white; border: 1px solid black; margin-bottom: 20px; padding: 5px 10px 5px 10px; float: right; display: block; width: 150px; margin: 0px 12px 20px 20px; }
+
+.current_players_block_add_player { background-color: white; border: 1px solid black; margin: 0px 20px 20px 0px; padding: 5px 5px 5px 10px; float: left; display: block; width: 200px;}
+.current_players_block_add_player h2 { margin-bottom: 5px; }
+
+.current_players_list { height: 440px; overflow: auto; padding-right: 10px; }
+.add_player_block_add_player { background-color: white; border: 1px solid black; margin: 0px 0px 20px 0px; padding: 5px 10px 5px 10px; float: left; display: block; width: 342px; height: 145px; }
+.game_info_block_add_player { background-color: white; border: 1px solid black; margin: 0px 0px 20px 0px; padding: 5px 10px 5px 10px; float: left; display: block; width: 342px; height: 285px; overflow: auto;}
+.insert_position_marker {text-align: right;}
+
+.add_player_selector {margin: 2px 0 8px 0;}
+.add_player_button {text-align: right;}
+
+.gallery_game { margin-bottom: 10px !important; }
+.gallery_game img,
+.gallery_game .no_image { float: left; margin-right: 5px; border: 1px solid black; display: block; width: 128px; height: 128px; }
+.gallery_game p { margin: 0px; }
+
+.thumb_selector { float: left; display: block; width: 180px; height: 350px; overflow: auto; margin-bottom: 10px; }
+.thumb { border: 1px solid black; }
+.name_selector { float: left; display: block; width: 400px; height: 350px; overflow: auto; margin: 0 0 10px 20px; padding: 0; }
+.name_block { display: block; background-color: white; width: 320px; border: 1px solid black; margin: 0 0 10px 0; padding: 5px; }
+.radio_button { vertical-align: top; }
+.no_padding { padding: 0 !important; }
+
+.preview .preview_thumb { border-right: 1px solid black; float: left; }
+div.preview { background-color: white; border: 1px solid black; margin-bottom: 20px; padding: 0; width: 604px; height: 128px; } 
+.preview .preview_body {display: block; padding: 5px 10px 5px 10px; height: 98px; overflow: auto; }
+.preview .preview_para { margin: 0;} 
+.preview .preview_game_id { text-align: right; margin-right: 10px;} 
+.preview .links { float: left; padding: 0px 10px 0px 10px; }
+
+.description_label { display: block; }
+.rename_submit { text-align: right; }
+.text_field_div { border: 1px solid black; padding: 5px; width: 320px; margin-bottom: 10px; display: block; background-color: white; }
+.text_field { border: 0; }
+.float_right_thumb {float: right; margin: 0 10px 10px 10px; }
+
+.display_whole_page_background { min-height: 1px; }
+
+.tooltip { position:relative; }
+.tooltip:hover {  }
+.tooltip span.tooltip-text { display: none; }
+.tooltip:hover span.tooltip-text { display:block; position:absolute; top:3em; left:2em; width:15em; border:1px solid black; background-color: white; color: black; text-align: center; }
+
+.pie_chart_image { margin-right: 20px; float: left; margin-top: 5px;}
+.beside_pie_chart { margin-top: 5px; display: block; height: 128px; }
+.piechart { width: 128px; height: 128px; overflow: hidden; }
+.offset_0 { }
+.offset_1 { background-position: -128px 0; }
+.offset_2 { background-position: -256px 0; }
+.offset_3 { background-position: -384px 0; }
+.offset_4 { background-position: -512px 0; }
+.offset_5 { background-position: -640px 0; }
+.offset_6 { background-position: -768px 0; }
+.offset_7 { background-position: -896px 0; }
+.offset_8 { background-position: -1024px 0; }
+.offset_9 { background-position: -1152px 0; }
+.offset_10 { background-position: -1280px 0; }
+.offset_11 { background-position: -1408px 0; }
+.offset_12 { background-position: -1536px 0; }
+.offset_13 { background-position: -1664px 0; }
+.offset_14 { background-position: -1792px 0; }
+.offset_15 { background-position: -1920px 0; }
+.offset_16 { background-position: -2048px 0; }

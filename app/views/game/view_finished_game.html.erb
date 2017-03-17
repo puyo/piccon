@@ -1,0 +1,29 @@
+<div class="finished_game">
+
+  <%= render :partial => '/globals/notices' %>
+  <h1><%= @game.gallery_name %></h1>
+  <div class="strip">
+    <%= image_tag @game.strip_url_path, :alt => "Finished strip 2", :class => 'strip' %>
+  </div>
+
+  <%= render :partial => 'options' %>
+
+  <fb:comments xid="<%= @game.id %>"
+  <% if @game.owner_id %>
+    send_notification_uid="<%= @game.owner_id %>" 
+  <% end %>
+  showform="true" numposts="5" canpost="true"  callbackurl="<%= game_path(@game) %>"
+  <% if @game.owner_id == fbsession.session_user_id.to_i %>
+    candelete="true" 
+  <% else %>
+    candelete="false"
+  <% end %>
+  >
+  <fb:title>Piccon Comments for Game <%= @game.id %> - <%= @game.gallery_name %></fb:title> 
+  </fb:comments>
+  <% if params[:fb_sig_xid_action] == 'post' 
+  @game.increment_comment_count
+    elsif params[:fb_sig_xid_action] == 'delete' 
+      @game.decrement_comment_count
+    end %>
+</div>

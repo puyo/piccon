@@ -1,0 +1,7 @@
+<div class="left">
+  <h2>You have skipped <fb:name useyou="true" reflexive="true" uid="<%= params[:player_id] %>" />.</h2><br/>
+  <h2>It is now <fb:name useyou="true" possessive="true" uid="<%=  @game.current_turn_player.user_id %>"/> turn.</h2><br/>
+
+  <h2>Game Information</h2>
+  <%= render :partial => 'info' %>
+</div>

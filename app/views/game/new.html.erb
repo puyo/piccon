@@ -1,0 +1,58 @@
+<div class="display_whole_page_background">
+  <div class="new_game_form">
+    <h2>New Piccon Game</h2>
+
+    <%= render :partial => '/globals/notices' %>
+
+    <form method="post" action="new">  
+      <% if @warning %>
+        <input type="hidden" name="warning" value="seen" />
+      <% end %>
+      <table class="new">
+        <tr>
+          <td class="head">Players <span class="details">(2 to 23)</span></td>
+          <td>
+            <div class="clearfix" style="padding-top: 10px; padding-bottom: 10px;">  
+              <!-- An input box for inviting players. If players have previously been specified then prefill these players on repeated viewings. -->
+              <fb:multi-friend-input width="300px" border_color="#8496ba" max="23" prefill_ids="<%= params[:ids].to_a.join(",") %>"/>
+            </div>  
+          </td>
+        </tr>
+        <tr>
+          <td class="head">Length <span class="details">(3 to 24)</span></td>
+          <td>
+            <!-- An input box for the game length (number of rounds in a game). -->
+            <select name="game[length]">
+              <% 22.times do |i| %> 
+                <option value="<%= i + 3 %>"
+                <% if i + 3 == @game.length %>
+                  selected="selected"
+                <% end %>
+                > <%= i + 3 %> turns</option>
+              <% end %>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <input type="submit" value="Create Game">
+          </td>
+        </tr>
+      </table>
+    </form> 
+  </div>
+  <% if @friends_with_app.any? %>
+    <div class="friends_with_piccon">
+      <h2>Friends with Piccon</h2>
+      <div class="friends">
+        <% @friends_with_app.each_with_index do |friend_id, i| %> 
+          <div class="friend clearfix">
+            <fb:profile-pic uid="<%= friend_id %>" size="square" linked="true" />
+            <span class="name"><fb:name uid="<%= friend_id %>"/></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

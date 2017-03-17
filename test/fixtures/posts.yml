@@ -1,0 +1,16 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+lucyandgreg_1:
+  game: lucyandgreg
+  author_id: 1
+  image_filename: "1-0.png"
+
+lucyandgreg_2:
+  game: lucyandgreg
+  author_id: 2
+  text: "A very young Zeus decides the Earth must perish"
+
+lucyandgreg_3:
+  game: lucyandgreg
+  author_id: 1
+  text: "1-2.png"

@@ -1,0 +1,7 @@
+<div class="invite">
+  <%= render :partial => '/globals/invite_form', :locals => { 
+    :exclude_ids => @friends_with_app, 
+    :action => invited_path,
+    :next_url => games_path,
+  } %>
+</div>

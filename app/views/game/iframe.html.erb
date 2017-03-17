@@ -1,0 +1,17 @@
+<div id="iframe">
+  <div id="flashcontent">
+  </div>
+
+  <script type="text/javascript" src="/javascripts/swfobject.js"></script>
+  <script type="text/javascript">
+    var attributes = {};
+    var params = {};
+    <%= params.map{|k,v| if k.match(/^fb_sig/) then "params.#{k} = '#{v}';" end }.compact.join("\n") %>
+    params.game_id = <%= @game.id %>;
+    swfobject.embedSWF("/PicconDrawArea.swf", "flashcontent", "512", "640", "9.0.0", false, params, attributes);
+
+    function showGame(){
+      window.parent.location.href = "<%= APP_URL %>/";
+    }
+  </script>
+</div>

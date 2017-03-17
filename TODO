@@ -1,0 +1,45 @@
+Post release
+
+* Allow players to be added mid game.
+* When a new user adds Piccon app, notify their friends who are already users. Need to split off a user table to do this.
+* Fix bug that can't send images occasionally.
+* Developer screen (we can see everybody's games)
+* Profile box - ? animated gif, ? "What do you see?" Drawing then the preceding and following descriptions.
+* Templatized feed stories.
+* Lucy & gak: Live game lobby (Scramble) or list of open games. Needs adult content warning.
+* Public gallery - Allow owners to make their strips viewable in the public gallery, anyone who doesn't like them there can make them not viewable again.
+* Name the finished games - based on one of the descriptions (?first/last). Allow owner to rename the game to whatever they like. In the unusual case of a one post game use Game #ID as the name.
+* Best loved games - allow people to mark a game as loved. Games need a column in the db with a list of all the player IDs who love that game. Games you love can appear in your "my games page" in their own section.
+* User profiles with: average time waiting on this player, number of games finished, numbers of games currently playing, number of games this player played that have been favourited.
+* Comment count. Games needs a comment count and comment time stamp in the db. In the finished games table a column with the title "Comments" and maybe an entry like "9th comment made 10 minutes ago" or "0 comments"???
+* Recommend an odd number of players on the New Game page.
+* Benchmark performance to estimate number of supported users
+* Ensure current user is a player for various controller methods
+* Reflect the fact that you are not playing a game on the game info view
+* Clean up <br/> tags, etc.
+* Notify kicked players
+* Notify new owners
+* Error handling in Flash
+* dependant => destroy and after_destroy hooks to remove drawings and strips
+* Credits
+* Bug: View (-14070 days left)
+* Pretty up the draw controls
+* Draw controls: Undo
+* Draw controls: Change cursor to outlined tool
+* Draw controls: More shapes (point, two sizes of circle, two sizes of square, spray paint)
+* Draw controls: Line tool
+* Figure out what Facebook Photos' aspect ratio requirements are ("An unknown error occurred." on the 153x573 PNG), lodged a bug
+* Restful routes
+* Overlay a big fat DRAW button on the draw area for confused, tired people
+* Save to Facebook Video.
+* Code review / refactoring
+* Fix line overrun for long single words
+* Save images in 4 or 8 bit not 16 bit
+* Saving a picture to continue drawing it later.
+* Remove iframe.
+* Chain letter/ wandering game mode. Don't specify players up-front but rather specify who's next after each turn.
+* Don't specify who's playing up-front.
+* Need to confirm to send blank images, not allowed to send blank text.
+* Somehow allow people to know How many game turns are waiting for a player or otherwise how inactive/active they are.
+* Your turn to draw/describe? 
+* Make Piccon themed error pages

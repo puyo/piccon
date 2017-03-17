@@ -1,11 +1,16 @@
 greg:
-  nickname: greg
-  rating: 100
-  fb_id: '123'
-  fb_auth: '123'
-
-new_guy:
-  nickname: 'new guy'
-  rating: 0
-  fb_id: '230923092302'
-  fb_auth: '230923092302'
+  facebook_id: 1
+lucy:
+  facebook_id: 2
+user1:
+  facebook_id: 11
+user2:
+  facebook_id: 12
+user3:
+  facebook_id: 13
+user4:
+  facebook_id: 14
+user5:
+  facebook_id: 15
+user6:
+  facebook_id: 16

@@ -1,0 +1,12 @@
+<div class="display_whole_page_background">
+  <div class="current_games">
+    <%= will_paginate @dev_current_games, :param_name => 'cur_page', :params => { :my_page => params[:my_page], :fin_page => params[:fin_page] }  %>
+    <h2>Developer Screen - Current Games</h2>
+    <%= link_to "Finished Games", dev_finished_games_path %>
+    <% if @dev_current_games.any? %>
+      <%= render :partial => '/globals/game_list', :locals => { :games => @dev_current_games, :finished => false, :play => false } %>
+    <% else %>
+      You don't have any current games yet. <%= link_to('Start a new game!', new_game_path) %>
+    <% end %>
+  </div>
+</div>

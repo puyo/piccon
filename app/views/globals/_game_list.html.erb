@@ -1,0 +1,53 @@
+<table class="games_list">
+  <tr>
+    <% if !finished %>
+      <% if play %>
+        <th>Play&nbsp;Game</th>
+      <% else %>
+        <th>Waiting&nbsp;for</th>
+      <% end %>
+    <% else %>
+      <th> Game </th>
+    <% end %>
+    <th>Players</th>
+    <% if !finished %>
+      <th>Progress</th>
+      <th>Last&nbsp;Turn</th>
+    <% else %>
+      <th>Comments</th>
+    <% end %>
+    <th>ID</th>
+  </tr>
+  <% for game in games %>
+    <% even = even.to_i ^ 1 %>
+    <tr class="even<%= even %>">
+      <% if !finished %>
+        <% if play %>
+          <td><div><%= phase(game) %></div></td>
+        <% else %>
+          <td><div> <%= status(game) %> 
+            <% if Time.now - game.updated_at >= (60 * 60 * 24) %>
+              <%= options(game) %>
+            <% end %></div></td>
+        <% end %>
+      <% else %>
+        <td><div><%= link_to game.gallery_name.to_s, game_path(game) %></div></td>
+      <% end %>
+      <td><div class="player_list"> <%= game.players.active.in_order.map{|p| "<fb:name firstnameonly=\"true\" capitalize=\"true\" ifcantsee=\"someone\" uid=\"#{p.user_id}\"/>" }.join(', ') %> </div></td>
+      <% if !finished %>
+        <td><div>       
+          <div class="prog-border" style="width: <%= 3 * game.length %>px;">
+            <div class="prog-bar" style="width: <%= 3 * game.posts.size %>px;">
+            </div>
+          </div>
+          <%= game.posts.size %> of <%= game.length %></div></td>
+      <td style="text-align: right"><div><%= time_ago_in_words(game.updated_at).gsub(/about /, '').capitalize %> ago </div></td>
+      <% else %>
+      <td style="text-align: right"><div><% if game.comment_count > 0 and game.last_comment_at %><%= link_to game.comment_count, game_path(game) + "#comments_" + game.id.to_s %><br/><%= time_ago_in_words(game.last_comment_at).gsub(/about /, '').capitalize + " ago" %><%else %>
+          0&nbsp;comments</div></td>
+      <% end %>
+    <% end %>
+    <td style="text-align: right"><div><%= link_to game.id, game_info_path(game) %></div></td>
+  </tr>
+<% end %>
+</table>

@@ -1,0 +1,10 @@
+<%
+invite_fbml = <<FBML
+<fb:name uid="#{fbsession.session_user_id}" firstnameonly="true" capitalize="true"/> wants you to come and play a fun drawing game called Piccon with <fb:pronoun objective="true" uid="#{fbsession.session_user_id}"/>. It's a bit like Chinese Whispers but with pictures. <fb:req-choice url="#{next_url}" label="Play Piccon" />
+FBML
+%>
+
+<fb:request-form action="<%= action %>" method="POST" invite="true" type="Piccon" content="<%=h invite_fbml %>">
+  <fb:multi-friend-selector rows="3" showborder="false" actiontext="Invite these friends to play Piccon" 
+  <% if defined?(exclude_ids) and exclude_ids.to_a.any? then %> exclude_ids="<%= exclude_ids.join(',') %>" <% end %> />
+</fb:request-form>

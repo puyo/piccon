@@ -1,0 +1,93 @@
+<div class="options">
+
+  <ul class="options_list">
+    <% if params[:action] != 'view' %>
+      <li><%= link_to('View game', game_path(@game)) %></li>
+    <% end %>
+    <% if !@game.owner.nil? %>
+      <%  if @game.is_started? and @game.is_player?(fbsession.session_user_id) %>
+        <li><%=  link_to('Quit game', game_leave_path(@game)) %>
+      <% end %>
+      <% if @game.is_started? and @game.owner.user_id == fbsession.session_user_id.to_i %>
+        <li><%= link_to('Add more players to game', game_add_player_path(@game)) %>
+      <% end %>
+    <% end %>
+
+    <% if @game.status >= 2 %><!-- finished game options -->
+      <li><%= link_to 'Save to Facebook Photos', game_save_to_photos_path(@game) %>
+      <%= dims = @game.strip_dims
+      if dims.first > 604 or dims.last > 604
+        "<br/> This image exceeds the maximum dimensions supported by Facebook Photos (604 pixels).<br/> Facebook Photos can only save a scaled, reduced quality version of this image."
+      end %></li>
+      <li><%= link_to 'Save to hard disk', game_save_url(@game) %></li>
+      <li><%= link_to 'View game in printable format', path_to_image(@game.strip_url_path), :target => '_blank' %></li>
+      <% if params[:action] != 'info' %>
+        <li><%= link_to 'View game information', game_info_path(@game) %></li>
+      <% end %>
+
+
+      <% if !@game.owner_id.nil? %><!-- Owner options -->
+        <% if @game.owner_id == fbsession.session_user_id.to_i %><!-- Owner options -->
+
+          <li><%= link_to 'Change title of game', game_rename_path(@game) %></li>
+          <% if @game.status == 2 %><!-- if game status is finished (private not yet rated) -->
+            <form name="set_privacy" id="set_privacy" method="post" action="<%= game_set_privacy_path(@game) %>">
+              <li><fb:submit form="set_privacy">Show game in Public Gallery</fb:submit></li>
+              <ul class="rating_options">
+                <li><input class="radio_button" id="G" value="G" type="radio" name="rating_selection" checked="checked"/><label for="G">Rated: G (Suitable for general viewing)</label></li>
+                <li><input class="radio_button" id="R18" value="R18" type="radio" name="rating_selection" /><label for="R18">Rated: R18 (Suitable for viewing by people over 18 only)</label></li>
+                <input type="hidden" value="<%= params[:action] %>" name="parent_view" />
+              </ul>
+            </form>
+          <% elsif @game.status == 30 %><!-- if game status is public (general rating) -->
+            <form name="set_privacy" id="set_privacy" method="post" action="<%= game_set_privacy_path(@game) %>">
+              <li><fb:submit form="set_privacy">Do not show this game in Public Gallery</fb:submit></li>
+              <input type="hidden" value="private_G" name="rating_selection" />
+              <input type="hidden" value="<%= params[:action] %>" name="parent_view" />
+            </form>
+          <% elsif @game.status == 40 %><!-- if game status is public (R18 rating) -->
+            <form name="set_privacy" id="set_privacy" method="post" action="<%= game_set_privacy_path(@game) %>">
+              <li><fb:submit form="set_privacy">Do not show this game in Public Gallery</fb:submit></li>
+              <input type="hidden" value="private_R18" name="rating_selection" />
+              <input type="hidden" value="<%= params[:action] %>" name="parent_view" />
+            </form>
+          <% elsif @game.status == 20 %><!-- if game status is private but previously rated R18) -->
+            <form name="set_privacy" id="set_privacy" method="post" action="<%= game_set_privacy_path(@game) %>">
+              <li><fb:submit form="set_privacy">Show game in Public Gallery (R18)</fb:submit></li>
+              <input type="hidden" value="R18" name="rating_selection" />
+              <input type="hidden" value="<%= params[:action] %>" name="parent_view" />
+            </form>
+          <% end %>
+
+
+        <% else %><!-- Non-owner options -->
+
+          <% if @game.status == 20 or @game.status == 2 %><!-- if game status is private -->
+            <li><a href="http://facebook.com/message.php?id=<%= @game.owner_id.to_s %>&subject=Publish your Piccon game!&msg=Hi! I really love your Piccon game - <%= @game.gallery_name.to_s %> - I think other people would too. Please put it up on the public galleries. The link to the game is: <%= game_path(@game) %>">Ask <fb:name uid="<%= @game.owner_id.to_s %>" ifcantsee="the game owner" linked="false"/> to make this game public</a></li>
+          <% end %>
+          <% if @game.status == 30 %><!-- if game status is public (general rating) -->
+            <fb:dialog id="r18_confirm_dialog_<%= @game.id %>" cancel_button=1>  
+            <fb:dialog-title>Restrict this game to adults 18 years and older</fb:dialog-title> 
+            <fb:dialog-content>
+            <form id="set_privacy_<%= @game.id %>" method="post" action="<%= game_set_privacy_path(@game) %>" >
+              Marking a game as R18 cannot be undone. Are you sure you want to restrict viewing of this game?
+              <input type="hidden" value="R18" name="rating_selection" />
+              <input type="hidden" value="<%= params[:action] %>" name="parent_view" />
+            </form>
+            </fb:dialog-content>  
+            <fb:dialog-button type="submit" value="Yes" form_id="set_privacy_<%= @game.id %>"/>
+            </fb:dialog> 
+            <li><a href="#" clicktoshowdialog="r18_confirm_dialog_<%= @game.id %>">Move this game to R18+ Gallery</a></li>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <!-- Developer options -->
+
+    <li><%= link_to 'Become a fan of Piccon', 'http://www.facebook.com/apps/application.php?id=8334582053' %></li>
+  </ul>
+
+  <div class="share">
+    <fb:share-button class="url" href="<%= game_path(@game) %>" />
+  </div>
+</div>

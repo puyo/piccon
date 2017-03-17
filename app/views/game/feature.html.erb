@@ -1,0 +1,20 @@
+<div>
+
+  <%= render :partial => 'preview', :locals => { :game => @game } %>
+  <form method="post" action="<%= game_feature_path(@game) %>">
+    <div class="thumb_selector">
+      <% for thumb_post in @game.drawing_posts %>
+        <div>
+        <input class="radio_button" id="<%= thumb_post %>" value="<%= thumb_post.id %>" type="radio" name="thumb_selection" <% if @game.gallery_thumbnail_post == thumb_post %> checked="checked" <% end %>/>
+          <label for="<%= thumb_post %>">
+            <img class="thumb" src="http://<%= BACKEND_HOST %><%= thumb_post.image_url_path %>" />
+          </label>
+        </div>
+      <% end %>
+    </div>
+
+  <div class="rename_submit"> <input type="submit" value="Save changes to featured thumbnail"/> </div>
+</form>
+
+
+</div>
